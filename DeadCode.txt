@@ -1,0 +1,29 @@
+        private void button1_Click(object sender, EventArgs e) {
+            //Console.WriteLine(InterchangeTracker.GetInterchangeNumber());
+            //Console.WriteLine(InterchangeTracker.GetInterchangeNumber());
+            //Console.WriteLine(InterchangeTracker.IncrementNumber());
+            //Console.WriteLine(InterchangeTracker.IncrementNumber());
+            //Console.WriteLine(InterchangeTracker.DecrementNumber());
+            //Console.WriteLine(InterchangeTracker.SetInterchangeNumber(10));
+            //Console.WriteLine(InterchangeTracker.GetInterchangeNumber());
+            //Console.WriteLine(InterchangeTracker.GetInterchangeNumber().ToString().PadLeft(9,'0'));
+            //Console.WriteLine(InterchangeTracker.GetInterchangeNumber());
+
+            //Console.WriteLine(InterchangeTracker.GetInterchangeDate());
+            //Console.WriteLine(InterchangeTracker.GetInterchangeTime());
+            //Console.WriteLine(InterchangeTracker.SetInterchangeDate(new DateTime(2015,12,12)));
+            //Console.WriteLine(InterchangeTracker.GetInterchangeDate());
+            //Console.WriteLine(InterchangeTracker.SetInterchangeTime(new DateTime(1900,1,1,5,5,5)));
+            //Console.WriteLine(InterchangeTracker.GetInterchangeTime());
+            //Console.WriteLine(InterchangeTracker.GetInterchangeDate());
+            //Console.WriteLine(InterchangeTracker.CreateNewInterchange());
+            //Console.WriteLine(InterchangeTracker.GetInterchangeTime());
+            //Console.WriteLine(InterchangeTracker.GetInterchangeDate());
+            //Console.WriteLine(InterchangeTracker.GetInterchangeNumber());
+            //Console.WriteLine(InterchangeTracker.UpdateInterchange());
+            //Console.WriteLine(InterchangeTracker.ToString());
+
+
+
+        }
+
