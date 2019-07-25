@@ -1,4 +1,4 @@
-        private void button1_Click(object sender, EventArgs e) {
+        public void button1_Click(object sender, EventArgs e) {
             //Console.WriteLine(InterchangeTracker.GetInterchangeNumber());
             //Console.WriteLine(InterchangeTracker.GetInterchangeNumber());
             //Console.WriteLine(InterchangeTracker.IncrementNumber());

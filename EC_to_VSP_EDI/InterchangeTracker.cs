@@ -3,7 +3,7 @@ using System.IO;
 
 public static class InterchangeTracker {
     public static string CWD = Directory.GetCurrentDirectory();
-    private static string FILENAME = @"\ict.dat";
+    public static string FILENAME = @"\ict.dat";
 
     public static uint GetInterchangeNumber() {
         if (File.Exists(CWD + FILENAME)) {
@@ -74,9 +74,10 @@ public static class InterchangeTracker {
 
     public static bool SetInterchangeDate(DateTime newDate) {
         try {
-            string value = GetInterchangeDate() + "\n" + newDate.ToString("yyMMdd") + "\n" + GetInterchangeTime();
+            string value = GetInterchangeNumber() + "\n" + newDate.ToString("yyMMdd") + "\n" + GetInterchangeTime();
             File.WriteAllText(CWD + FILENAME, value);
         } catch (Exception e) {
+            
             return false;
         }
 
