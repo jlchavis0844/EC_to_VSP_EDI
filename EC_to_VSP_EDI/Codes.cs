@@ -87,5 +87,6 @@ namespace EC_to_VSP_EDI {
         public static string Original = "00";
         public static string ReSubmission = "15";
         public static string InformationCopy = "22";
+        public static string Test = "22";
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace EC_to_VSP_EDI {
+﻿using System.Windows.Forms;
+
+namespace EC_to_VSP_EDI {
     partial class Form1 {
         /// <summary>
         /// Required designer variable.
@@ -23,47 +25,238 @@
         /// the contents of this method with the code editor.
         /// </summary>
         public void InitializeComponent() {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.btnLoadFile = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnProcessEDI = new System.Windows.Forms.Button();
+            this.lblFileLocation = new System.Windows.Forms.Label();
+            this.dtPicker = new System.Windows.Forms.DateTimePicker();
+            this.btnUpdate = new System.Windows.Forms.Button();
+            this.lblInterchangeNumber = new System.Windows.Forms.Label();
+            this.btnSaveFile = new System.Windows.Forms.Button();
+            this.lblOutPutFolder = new System.Windows.Forms.Label();
+            this.lblProcess = new System.Windows.Forms.Label();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.tbTextOut = new System.Windows.Forms.TextBox();
+            this.btnOutput = new System.Windows.Forms.Button();
+            this.lblOutputSave = new System.Windows.Forms.Label();
+            this.cbType = new System.Windows.Forms.ComboBox();
+            this.lblFileType = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // btnLoadFile
             // 
-            this.btnLoadFile.Location = new System.Drawing.Point(12, 12);
+            this.btnLoadFile.Location = new System.Drawing.Point(13, 12);
             this.btnLoadFile.Name = "btnLoadFile";
-            this.btnLoadFile.Size = new System.Drawing.Size(75, 23);
+            this.btnLoadFile.Size = new System.Drawing.Size(132, 23);
             this.btnLoadFile.TabIndex = 0;
             this.btnLoadFile.Text = "Load Census";
             this.btnLoadFile.UseVisualStyleBackColor = true;
             this.btnLoadFile.Click += new System.EventHandler(this.btnLoadFile_Click);
             // 
-            // button1
+            // btnProcessEDI
             // 
-            this.button1.Location = new System.Drawing.Point(12, 60);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnProcessEDI.Enabled = false;
+            this.btnProcessEDI.Location = new System.Drawing.Point(302, 138);
+            this.btnProcessEDI.Name = "btnProcessEDI";
+            this.btnProcessEDI.Size = new System.Drawing.Size(132, 23);
+            this.btnProcessEDI.TabIndex = 1;
+            this.btnProcessEDI.Text = "Process EDI";
+            this.btnProcessEDI.UseVisualStyleBackColor = true;
+            this.btnProcessEDI.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // lblFileLocation
+            // 
+            this.lblFileLocation.AutoSize = true;
+            this.lblFileLocation.Location = new System.Drawing.Point(158, 17);
+            this.lblFileLocation.Name = "lblFileLocation";
+            this.lblFileLocation.Size = new System.Drawing.Size(95, 13);
+            this.lblFileLocation.TabIndex = 2;
+            this.lblFileLocation.Text = "Click Here to Load";
+            // 
+            // dtPicker
+            // 
+            this.dtPicker.Enabled = false;
+            this.dtPicker.Location = new System.Drawing.Point(158, 55);
+            this.dtPicker.Name = "dtPicker";
+            this.dtPicker.Size = new System.Drawing.Size(200, 20);
+            this.dtPicker.TabIndex = 3;
+            // 
+            // btnUpdate
+            // 
+            this.btnUpdate.Location = new System.Drawing.Point(13, 54);
+            this.btnUpdate.Name = "btnUpdate";
+            this.btnUpdate.Size = new System.Drawing.Size(132, 23);
+            this.btnUpdate.TabIndex = 4;
+            this.btnUpdate.Text = "Update Interchange";
+            this.btnUpdate.UseVisualStyleBackColor = true;
+            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
+            // 
+            // lblInterchangeNumber
+            // 
+            this.lblInterchangeNumber.AutoSize = true;
+            this.lblInterchangeNumber.Location = new System.Drawing.Point(364, 59);
+            this.lblInterchangeNumber.Name = "lblInterchangeNumber";
+            this.lblInterchangeNumber.Size = new System.Drawing.Size(152, 13);
+            this.lblInterchangeNumber.TabIndex = 5;
+            this.lblInterchangeNumber.Text = "waiting for interchange number";
+            // 
+            // btnSaveFile
+            // 
+            this.btnSaveFile.Location = new System.Drawing.Point(13, 96);
+            this.btnSaveFile.Name = "btnSaveFile";
+            this.btnSaveFile.Size = new System.Drawing.Size(132, 23);
+            this.btnSaveFile.TabIndex = 6;
+            this.btnSaveFile.Text = "Output Folder";
+            this.btnSaveFile.UseVisualStyleBackColor = true;
+            this.btnSaveFile.Click += new System.EventHandler(this.btnSaveFile_Click);
+            // 
+            // lblOutPutFolder
+            // 
+            this.lblOutPutFolder.AutoSize = true;
+            this.lblOutPutFolder.Location = new System.Drawing.Point(158, 101);
+            this.lblOutPutFolder.Name = "lblOutPutFolder";
+            this.lblOutPutFolder.Size = new System.Drawing.Size(120, 13);
+            this.lblOutPutFolder.TabIndex = 7;
+            this.lblOutPutFolder.Text = "Waiting for output folder";
+            // 
+            // lblProcess
+            // 
+            this.lblProcess.AutoSize = true;
+            this.lblProcess.Location = new System.Drawing.Point(447, 143);
+            this.lblProcess.Name = "lblProcess";
+            this.lblProcess.Size = new System.Drawing.Size(122, 13);
+            this.lblProcess.TabIndex = 8;
+            this.lblProcess.Text = "Waiting to be processed";
+            // 
+            // panel1
+            // 
+            this.panel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.panel1.Controls.Add(this.tbTextOut);
+            this.panel1.Location = new System.Drawing.Point(15, 168);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(857, 539);
+            this.panel1.TabIndex = 9;
+            // 
+            // tbTextOut
+            // 
+            this.tbTextOut.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.tbTextOut.Location = new System.Drawing.Point(4, 4);
+            this.tbTextOut.Multiline = true;
+            this.tbTextOut.Name = "tbTextOut";
+            this.tbTextOut.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.tbTextOut.Size = new System.Drawing.Size(845, 524);
+            this.tbTextOut.TabIndex = 0;
+            // 
+            // btnOutput
+            // 
+            this.btnOutput.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnOutput.Enabled = false;
+            this.btnOutput.Location = new System.Drawing.Point(15, 713);
+            this.btnOutput.Name = "btnOutput";
+            this.btnOutput.Size = new System.Drawing.Size(272, 23);
+            this.btnOutput.TabIndex = 10;
+            this.btnOutput.Text = "Output EDI File";
+            this.btnOutput.UseVisualStyleBackColor = true;
+            this.btnOutput.Click += new System.EventHandler(this.btnOutput_Click);
+            // 
+            // lblOutputSave
+            // 
+            this.lblOutputSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.lblOutputSave.AutoSize = true;
+            this.lblOutputSave.Location = new System.Drawing.Point(293, 718);
+            this.lblOutputSave.Name = "lblOutputSave";
+            this.lblOutputSave.Size = new System.Drawing.Size(133, 13);
+            this.lblOutputSave.TabIndex = 11;
+            this.lblOutputSave.Text = "Waiting for file to be saved";
+            // 
+            // cbType
+            // 
+            this.cbType.FormattingEnabled = true;
+            this.cbType.Items.AddRange(new object[] {
+            "Test",
+            "Original",
+            "Re-submission",
+            "Information Copy"});
+            this.cbType.Location = new System.Drawing.Point(76, 139);
+            this.cbType.Name = "cbType";
+            this.cbType.Size = new System.Drawing.Size(187, 21);
+            this.cbType.TabIndex = 12;
+            // 
+            // lblFileType
+            // 
+            this.lblFileType.AutoSize = true;
+            this.lblFileType.Location = new System.Drawing.Point(17, 143);
+            this.lblFileType.Name = "lblFileType";
+            this.lblFileType.Size = new System.Drawing.Size(53, 13);
+            this.lblFileType.TabIndex = 13;
+            this.lblFileType.Text = "File Type:";
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
+            this.pictureBox1.Location = new System.Drawing.Point(523, 12);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(341, 128);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pictureBox1.TabIndex = 14;
+            this.pictureBox1.TabStop = false;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(879, 634);
-            this.Controls.Add(this.button1);
+            this.ClientSize = new System.Drawing.Size(879, 744);
+            this.Controls.Add(this.pictureBox1);
+            this.Controls.Add(this.lblFileType);
+            this.Controls.Add(this.cbType);
+            this.Controls.Add(this.lblOutputSave);
+            this.Controls.Add(this.btnOutput);
+            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.lblProcess);
+            this.Controls.Add(this.lblOutPutFolder);
+            this.Controls.Add(this.btnSaveFile);
+            this.Controls.Add(this.lblInterchangeNumber);
+            this.Controls.Add(this.btnUpdate);
+            this.Controls.Add(this.dtPicker);
+            this.Controls.Add(this.lblFileLocation);
+            this.Controls.Add(this.btnProcessEDI);
             this.Controls.Add(this.btnLoadFile);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Ease Enrollment Census to VSP 834 EDI";
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
         #endregion
 
         public System.Windows.Forms.Button btnLoadFile;
-        public System.Windows.Forms.Button button1;
+        public System.Windows.Forms.Button btnProcessEDI;
+        private System.Windows.Forms.Label lblFileLocation;
+        private System.Windows.Forms.DateTimePicker dtPicker;
+        private System.Windows.Forms.Button btnUpdate;
+        private System.Windows.Forms.Label lblInterchangeNumber;
+        private System.Windows.Forms.Button btnSaveFile;
+        private System.Windows.Forms.Label lblOutPutFolder;
+        private System.Windows.Forms.Label lblProcess;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.TextBox tbTextOut;
+        private Button btnOutput;
+        private Label lblOutputSave;
+        private ComboBox cbType;
+        private Label lblFileType;
+        private PictureBox pictureBox1;
     }
 }
 

@@ -7,6 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EC_to_VSP_EDI", "EC_to_VSP_
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{EF236B29-A96A-4EF0-AD77-CA929B40FD70}"
 	ProjectSection(SolutionItems) = preProject
+		\\nas3\users\jchavis\Desktop\BenLogo_10_VSP.png = \\nas3\users\jchavis\Desktop\BenLogo_10_VSP.png
 		DeadCode.txt = DeadCode.txt
 		ict.dat = ict.dat
 	EndProjectSection

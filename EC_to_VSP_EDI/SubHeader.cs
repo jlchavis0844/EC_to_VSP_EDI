@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 
 namespace EC_to_VSP_EDI {
     public class SubHeader {
@@ -38,35 +39,40 @@ namespace EC_to_VSP_EDI {
         private const string N1CIdentificationCode = "30-0369656";
         private const string SegmentTerminator = "~";
 
-        public SubHeader() {
+        public SubHeader(string type) {
             GSDate = DateTime.Now.ToString("yyyyMMdd");
             GSTime = DateTime.Now.ToString("hhmm");
             GroupControlNumber = InterchangeTracker.GetInterchangeNumber();
             TransactionSetControlNumber = InterchangeTracker.GetInterchangeNumber().ToString().PadLeft(4,'0');
-            TransactionSetPurpose = TransactionSetPurposes.Original;
+            TransactionSetPurpose = type;
 
             BGNDate = GSDate;
             BGNTime = GSTime;
         }
 
         public new string ToString() {
-            return SegmentIDGS + '*' + FunctionalIDCode + '*' + SenderID + '*' + ReceiverID + '*' + GSDate + '*' + GSTime + '*' +
-                GroupControlNumber + '*' + ResponsibleAgencyCode + '*' + VersionReleaseCode + SegmentTerminator + "\n" +
-                SegmentIDST + '*' + TransactionIDCode + '*' + TransactionSetControlNumber + '*' +
-                ImplementationConventionReference + SegmentTerminator + "\n" +
-                SegmentIDBGN + '*' + TransactionSetPurpose + '*' + ReferenceNumber + '*' + BGNDate + '*' + BGNTime + '*' +
+            StringBuilder tempSB = new StringBuilder();
+            tempSB.AppendLine(SegmentIDGS + '*' + FunctionalIDCode + '*' + SenderID + '*' + ReceiverID + '*' + GSDate + '*' + GSTime + '*' +
+                GroupControlNumber + '*' + ResponsibleAgencyCode + '*' + VersionReleaseCode + SegmentTerminator);
+
+            tempSB.AppendLine(SegmentIDST + '*' + TransactionIDCode + '*' + TransactionSetControlNumber + '*' +
+                ImplementationConventionReference + SegmentTerminator);
+
+            tempSB.AppendLine(SegmentIDBGN + '*' + TransactionSetPurpose + '*' + ReferenceNumber + '*' + BGNDate + '*' + BGNTime + '*' +
                 ((TransactionSetPurpose != TransactionSetPurposes.Original) ? "****" : ("*" + TransactionSetPurpose + "*")) +
-                ActionCode + SegmentTerminator + '\n' + SegmentIDRef + '*' + RefReferenceNumberQualifier + '*' +
-                ReferenceNumber + SegmentTerminator + '\n' +
+                ActionCode + SegmentTerminator);
 
-                //N1A
-                N1SegmentID + '*' + EntityIdentCodeSponser + '*' + N1CName + '*' + N1IdentificationCodeQualifier + '*' + SenderID + SegmentTerminator + '\n' +
+            tempSB.AppendLine(SegmentIDRef + '*' + RefReferenceNumberQualifier + '*' + ReferenceNumber + SegmentTerminator);
 
-                //N1B
-                N1SegmentID + '*' + N1BEntityIdentifierCode + '*' + N1BName + '*' + N1IdentificationCodeQualifier + '*' + ReceiverID + SegmentTerminator + '\n' +
+            tempSB.AppendLine(N1SegmentID + '*' + EntityIdentCodeSponser + '*' + N1CName + '*' + 
+                N1IdentificationCodeQualifier + '*' + SenderID + SegmentTerminator);
 
-                //N1C
-                N1SegmentID + '*' + N1CEntityIdentifierCode + '*' + N1CName + '*' + N1IdentificationCodeQualifier + '*' + SenderID + SegmentTerminator + '\n';
+            tempSB.AppendLine(N1SegmentID + '*' + N1BEntityIdentifierCode + '*' + N1BName + '*' + 
+                N1IdentificationCodeQualifier + '*' + ReceiverID + SegmentTerminator);
+
+            tempSB.AppendLine(N1SegmentID + '*' + N1CEntityIdentifierCode + '*' + N1CName + '*' + N1IdentificationCodeQualifier + '*' + 
+                SenderID + SegmentTerminator);
+            return tempSB.ToString();
         }
     }
 }

@@ -9,19 +9,19 @@ namespace EC_to_VSP_EDI {
 
         //INS
         public const string SegmentID_INS = "INS";
-        public char SubscriberIndicator_INS01;
-        public string IndividualRelationshipCode_INS02;
+        public char         SubscriberIndicator_INS01;
+        public string       IndividualRelationshipCode_INS02;
         public const string MaintenanceTypeCode_INS03 = "030";
         public       string MaintenanceReasonCode_INS04;
-        public char BenefitStatusCode_INS05;
+        public char         BenefitStatusCode_INS05;
         //public       char   HandicapIndicator_INS06;
 
         //REF
         public const string SegmentID_REF = "REF";
         public const string ReferenceNumberQualifier_REF01 = "0F"; //SSN
-        public string ReferenceNumber_REF02;
-        public string ReferenceNumberQualifier2_REF01;
-        public string ReferenceNumber2_REF02;
+        public string       ReferenceNumber_REF02;
+        public string       ReferenceNumberQualifier2_REF01;
+        public string       ReferenceNumber2_REF02;
         public string ReferenceNumberQualifier3_REF01;
         public string ReferenceNumber3_REF02;
         public const string ReferenceNumberQualifierVSP_REF01 = "DX"; //VSP division
