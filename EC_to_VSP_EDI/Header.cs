@@ -17,14 +17,20 @@ public class Header
     private const string InterchangeControlVersionNum    = "00501";
     private string       InterchangeControlNum;
     private const char   AcknowledgementRequested        = '0';
-    private const char   UsageIndicator                  = 'P';
+    private char         UsageIndicator;
     private const char   ComponentElementSeparator       = '>';
     private const char   SegmentTerminator               = '~';
 
-    public Header(){
+    public Header(string type){
         InterchangeDate = InterchangeTracker.GetInterchangeDate();
         InterchangeTime = InterchangeTracker.GetInterchangeTime();
         InterchangeControlNum = InterchangeTracker.GetInterchangeNumber().ToString().PadLeft(9,'0');
+
+        if(type == TransactionSetPurposes.Test) {
+            UsageIndicator = 'T';
+        } else {
+            UsageIndicator = 'P';
+        }
 	}
 
     public new string ToString() {

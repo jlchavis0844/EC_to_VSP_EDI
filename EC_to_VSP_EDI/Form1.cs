@@ -86,10 +86,8 @@ namespace EC_to_VSP_EDI {
             }
 
             InterchangeTracker.UpdateInterchange();
-            header = new Header();
 
             string type;
-
             switch (cbType.SelectedIndex) {
                 case 1:
                     type = TransactionSetPurposes.Original;
@@ -105,6 +103,7 @@ namespace EC_to_VSP_EDI {
                     break;
             }
             subHeader = new SubHeader(type);
+            header = new Header(type);
 
             foreach(var row in records) {
                 enrollments.Add(new EnrollmentEntry(row));
