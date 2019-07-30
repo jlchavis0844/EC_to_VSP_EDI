@@ -85,7 +85,7 @@ namespace EC_to_VSP_EDI {
                 return;
             }
 
-            InterchangeTracker.UpdateInterchange();
+            //InterchangeTracker.UpdateInterchange();
 
             string type;
             switch (cbType.SelectedIndex) {
