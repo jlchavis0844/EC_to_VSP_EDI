@@ -85,8 +85,7 @@ namespace EC_to_VSP_EDI {
         public const string DateTimeFormat_DTP02 = "D8";
         public string DateTimePeriod_Start_DTP03;
         public string DateTimePeriod_End_DTP03;
-
-
+        
         //Constructor
         public EnrollmentEntry(CensusRow row) {
             if (row.RelationshipCode == "0") {
@@ -97,8 +96,13 @@ namespace EC_to_VSP_EDI {
             
             IndividualRelationshipCode_INS02 = RelationshipTranslation(row.RelationshipCode);
             BenefitStatusCode_INS05 = 'A';
-            if(row.SSN != null)
-                ReferenceNumber_REF02 = row.SSN.Replace("-","");
+
+            if (row.SSN != null && row.SSN != "") {
+                ReferenceNumber_REF02 = row.SSN.Replace("-", "");
+            } else {
+                
+                Form1.log.Error("ERR: " + (++Form1.errorCounter) + "\tMissing SSN for the following:\n" + row.ToString());
+            }
             ReferenceNumberVSP_REF02 = row.Division;
             NameLast_NM103 = row.LastName;
             NameFirst_NM104 = row.FirstName;

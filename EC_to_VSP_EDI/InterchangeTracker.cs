@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EC_to_VSP_EDI;
+using System;
 using System.IO;
 
 public static class InterchangeTracker {
@@ -45,7 +46,8 @@ public static class InterchangeTracker {
             File.WriteAllText(CWD + FILENAME, value);
             return temp;
         } catch (Exception e) {
-            Console.WriteLine(e);
+            Form1.log.Error(e);
+            //Console.WriteLine(e);
             return 0;
         }
     }
@@ -57,6 +59,7 @@ public static class InterchangeTracker {
             File.WriteAllText(CWD + FILENAME, value);
             return temp;
         } catch (Exception e) {
+            Form1.log.Error(e);
             return 0;
         }
     }
@@ -66,6 +69,7 @@ public static class InterchangeTracker {
             string value = newNumber + "\n" + GetInterchangeDate() + "\n" + GetInterchangeTime();
             File.WriteAllText(CWD + FILENAME, value);
         } catch (Exception e) {
+            Form1.log.Error(e);
             return false;
         }
 
@@ -77,7 +81,7 @@ public static class InterchangeTracker {
             string value = GetInterchangeNumber() + "\n" + newDate.ToString("yyMMdd") + "\n" + GetInterchangeTime();
             File.WriteAllText(CWD + FILENAME, value);
         } catch (Exception e) {
-            
+            Form1.log.Error(e);
             return false;
         }
 
@@ -89,6 +93,7 @@ public static class InterchangeTracker {
             string value = GetInterchangeNumber() + "\n" + GetInterchangeDate() + "\n" + newTime.ToString("hhmm");
             File.WriteAllText(CWD + FILENAME, value);
         } catch (Exception e) {
+            Form1.log.Error(e);
             return false;
         }
 
@@ -102,7 +107,8 @@ public static class InterchangeTracker {
             File.WriteAllText(CWD + FILENAME, newFile);
             return true;
         } catch (Exception e) {
-            Console.WriteLine(e);
+            //Console.WriteLine(e);
+            Form1.log.Error(e);
             return false;
         }
     }
@@ -119,10 +125,10 @@ public static class InterchangeTracker {
         return false;
         } else if (!SetInterchangeTime(now)) {
             return false;
-        } else  return true;
+        } else return true;
     }
 
-    public static string ToString() {
+    public static new string ToString() {
         return GetInterchangeNumber() + "\n" + GetInterchangeDate() + "\n" + GetInterchangeTime();
     }
 }

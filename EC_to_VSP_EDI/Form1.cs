@@ -21,6 +21,7 @@ namespace EC_to_VSP_EDI {
         public static List<CensusRow> records = new List<CensusRow>();
         public static string outputFolder;
         public static StringBuilder textOut;
+        public static int errorCounter = 0;
 
         public Form1() {
             InitializeComponent();
@@ -66,7 +67,11 @@ namespace EC_to_VSP_EDI {
 
                         records = csv.GetRecords<CensusRow>().Where(rec => rec.CoverageDetails != "Waived" 
                         && DateTime.Parse(rec.PlanEffectiveEndDate) >= DateTime.Now).ToList()
-                        .Where(rec => rec.CoverageDetails != "Waived" && DateTime.Parse(rec.PlanEffectiveEndDate) >= DateTime.Now).ToList();
+                        .Where(rec => 
+                            rec.CoverageDetails != "Waived" && 
+                            DateTime.Parse(rec.PlanEffectiveEndDate) >= DateTime.Now && 
+                            rec.PlanType == "Vision"
+                        ).ToList();
 
                         log.Info(records.Count() + " records loaded from Census file.");
                     }
@@ -112,22 +117,22 @@ namespace EC_to_VSP_EDI {
             trailer = new Trailer();
 
 
-            Console.WriteLine(trailer.ToString());
+            //Console.WriteLine(trailer.ToString());
 
             textOut = new StringBuilder();
             textOut.AppendLine(header.ToString());
             textOut.AppendLine(subHeader.ToString());
 
-            Console.WriteLine(header.ToString());
-            Console.WriteLine(subHeader.ToString());
+            //Console.WriteLine(header.ToString());
+            //Console.WriteLine(subHeader.ToString());
 
             foreach (var line in enrollments) {
                 textOut.AppendLine(line.ToString());
-                Console.WriteLine(line.ToString());
+                //Console.WriteLine(line.ToString());
             }
 
             textOut.AppendLine(trailer.ToString());
-            Console.WriteLine(trailer.ToString());
+            //Console.WriteLine(trailer.ToString());
 
             tbTextOut.MaxLength = 10000;
             tbTextOut.Text = textOut.ToString();

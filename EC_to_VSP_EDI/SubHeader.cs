@@ -25,7 +25,7 @@ namespace EC_to_VSP_EDI {
         private const char ActionCode = '4';
         private const string SegmentIDRef = "REF";
         private const string RefReferenceNumberQualifier = "38";
-        private const string RefReferenceNumber = "";
+        private const string RefReferenceNumber = "8005054";
         private const string N1SegmentID = "N1";
         private const string EntityIdentCodeSponser = "P5";
         private const string PlanSponser = "Sponser Name";
@@ -62,7 +62,7 @@ namespace EC_to_VSP_EDI {
                 ((TransactionSetPurpose != TransactionSetPurposes.Original) ? "****" : ("*" + TransactionSetPurpose + "*")) +
                 ActionCode + SegmentTerminator);
 
-            tempSB.AppendLine(SegmentIDRef + '*' + RefReferenceNumberQualifier + '*' + ReferenceNumber + SegmentTerminator);
+            tempSB.AppendLine(SegmentIDRef + '*' + RefReferenceNumberQualifier + '*' + RefReferenceNumber + SegmentTerminator);
 
             tempSB.AppendLine(N1SegmentID + '*' + EntityIdentCodeSponser + '*' + N1CName + '*' + 
                 N1IdentificationCodeQualifier + '*' + SenderID + SegmentTerminator);
