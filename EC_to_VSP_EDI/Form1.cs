@@ -1,9 +1,11 @@
 ﻿using CsvHelper;
 using log4net;
+using PgpCore;
 using Syroot.Windows.IO;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -22,6 +24,9 @@ namespace EC_to_VSP_EDI {
         public static string outputFolder;
         public static StringBuilder textOut;
         public static int errorCounter = 0;
+        public static string publicKeyFilePath = @"\\nas3\users\jchavis\Documents\VSP.asc";
+        public static string privateKeyFilePath = @"\\nas3\users\jchavis\Documents\SecretKey.asc";
+        public static string pgpPassFile = @"\\nas3\users\jchavis\Documents\pgpPass.pgp";
 
         public Form1() {
             InitializeComponent();
@@ -90,23 +95,25 @@ namespace EC_to_VSP_EDI {
                 return;
             }
 
-            //InterchangeTracker.UpdateInterchange();
-
             string type;
             switch (cbType.SelectedIndex) {
                 case 1:
                     type = TransactionSetPurposes.Original;
                     break;
+
                 case 2:
                     type = TransactionSetPurposes.ReSubmission;
                     break;
+
                 case 3:
                     type = TransactionSetPurposes.InformationCopy;
                     break;
+
                 default:
                     type = TransactionSetPurposes.Test;
                     break;
             }
+
             subHeader = new SubHeader(type);
             header = new Header(type);
 
@@ -116,25 +123,18 @@ namespace EC_to_VSP_EDI {
 
             trailer = new Trailer();
 
-
-            //Console.WriteLine(trailer.ToString());
-
             textOut = new StringBuilder();
             textOut.AppendLine(header.ToString());
             textOut.AppendLine(subHeader.ToString());
 
-            //Console.WriteLine(header.ToString());
-            //Console.WriteLine(subHeader.ToString());
-
             foreach (var line in enrollments) {
                 textOut.AppendLine(line.ToString());
-                //Console.WriteLine(line.ToString());
             }
 
             textOut.AppendLine(trailer.ToString());
-            //Console.WriteLine(trailer.ToString());
+            textOut = new StringBuilder(textOut.ToString().Replace("\r\n\r\n", "\r\n"));
 
-            tbTextOut.MaxLength = 10000;
+            tbTextOut.MaxLength = int.MaxValue;
             tbTextOut.Text = textOut.ToString();
             btnOutput.Enabled = true;
         }
@@ -151,7 +151,6 @@ namespace EC_to_VSP_EDI {
                 log.Info("Output directory set to " + outputFolder);
                 lblOutPutFolder.Text = outputFolder;
             }
-            
         }
 
         private void btnUpdate_Click(object sender, EventArgs e) {
@@ -175,6 +174,15 @@ namespace EC_to_VSP_EDI {
         private void btnOutput_Click(object sender, EventArgs e) {
             string outputFileLocation = outputFolder + @"\t" + DateTime.Now.ToString("yyyyMMdd") + ".txt";
             log.Info("attempting to save EDI to " + outputFileLocation);
+            try {
+                if (!Directory.Exists(outputFolder))
+                    throw new ArgumentException("File location not valid", "original");
+            } catch(Exception ex1) {
+                log.Info("No out location selected.");
+                lblOutputSave.Text = "Select output folder first";
+                lblOutputSave.ForeColor = Color.Red;
+                lblOutputSave.Font = new Font(lblOutputSave.Font, FontStyle.Bold);
+            }
 
             try {
                 using (StreamWriter file = new StreamWriter(outputFileLocation, false)) {
@@ -186,6 +194,22 @@ namespace EC_to_VSP_EDI {
                 log.Error("ERROR\n" + ex);
             }
 
+
+            string pgpPass = "";
+            try {
+                using (StreamReader sr = new StreamReader(pgpPassFile)) {
+                    pgpPass = sr.ReadToEnd();
+                }
+                if (pgpPass == null || pgpPass == "")
+                    return;
+                using (PGP pgp = new PGP()) {
+                    log.Info("Writing the output to pgp " + outputFileLocation.Replace("txt", "pgp"));
+                    pgp.EncryptFileAndSign(INPUTFILE, outputFileLocation.Replace("txt", "pgp"),
+                        publicKeyFilePath, privateKeyFilePath, pgpPass, true, true);
+                }
+            } catch(Exception ex3) {
+                log.Error("ERROR:\n" + ex3);
+            }
         }
     }
 }

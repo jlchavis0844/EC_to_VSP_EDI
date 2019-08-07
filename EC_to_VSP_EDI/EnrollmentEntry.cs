@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
@@ -97,13 +98,28 @@ namespace EC_to_VSP_EDI {
             IndividualRelationshipCode_INS02 = RelationshipTranslation(row.RelationshipCode);
             BenefitStatusCode_INS05 = 'A';
 
-            if (row.SSN != null && row.SSN != "") {
-                ReferenceNumber_REF02 = row.SSN.Replace("-", "");
+            var memberSSN = (from record in Form1.records
+                             where record.EID == row.EID && record.RelationshipCode == "0"
+                             select record.SSN).First().ToString().Replace("-", "");
+
+            if (memberSSN != null && memberSSN != "") {
+                //ReferenceNumber_REF02 = row.SSN.Replace("-", "");
+                ReferenceNumber_REF02 = memberSSN;
             } else {
-                
+                //ReferenceNumber_REF02 = "         ";
                 Form1.log.Error("ERR: " + (++Form1.errorCounter) + "\tMissing SSN for the following:\n" + row.ToString());
             }
-            ReferenceNumberVSP_REF02 = row.Division;
+
+            string memberDiv = (from record in Form1.records
+                             where record.EID == row.EID && record.RelationshipCode == "0"
+                             select record.JobClass).First().ToString();
+
+            if(memberDiv == "CLASS-MGMT") {
+                ReferenceNumberVSP_REF02 = "0001";
+            } else {
+                ReferenceNumberVSP_REF02 = "0002";
+            }
+
             NameLast_NM103 = row.LastName;
             NameFirst_NM104 = row.FirstName;
             if(row.MiddleName.Length > 0)
