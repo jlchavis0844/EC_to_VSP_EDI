@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -27,6 +28,8 @@ namespace EC_to_VSP_EDI {
         public string ReferenceNumber3_REF02;
         public const string ReferenceNumberQualifierVSP_REF01 = "DX"; //VSP division
         public string ReferenceNumberVSP_REF02;
+
+        public static List<string> divList0001 = new List<string>{"CLASS-MGMT"};
 
         //NM1
         public const string SegmentID_NM1 = "NM1";
@@ -114,16 +117,23 @@ namespace EC_to_VSP_EDI {
                              where record.EID == row.EID && record.RelationshipCode == "0"
                              select record.JobClass).First().ToString();
 
-            if(memberDiv == "CLASS-MGMT") {
+            if(divList0001.Contains(memberDiv)) {
                 ReferenceNumberVSP_REF02 = "0001";
+                Form1.log.Info(row.FirstName + " " + row.LastName + "\t" + memberDiv + "\t" + row.JobClass);
             } else {
                 ReferenceNumberVSP_REF02 = "0002";
+                Form1.log.Info(row.FirstName + " " + row.LastName + "\t" + memberDiv + "\t" + row.JobClass);
             }
 
             NameLast_NM103 = row.LastName;
             NameFirst_NM104 = row.FirstName;
-            if(row.MiddleName.Length > 0)
+
+            if(row.MiddleName.Length > 0) {
                 NameInitial_NM105 = row.MiddleName[0];
+            } else {
+                NameInitial_NM105 = '\0';
+            }
+
             IdentificationCode_NM109 = row.SSN.Replace("-","");
             CommunicationNumberQualifier_PER03 = "HP";
 

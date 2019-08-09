@@ -24,8 +24,12 @@ namespace EC_to_VSP_EDI {
         public static string outputFolder;
         public static StringBuilder textOut;
         public static int errorCounter = 0;
+
+        //TODO: add ability to load as a file
         public static string publicKeyFilePath = @"\\nas3\users\jchavis\Documents\VSP.asc";
         public static string privateKeyFilePath = @"\\nas3\users\jchavis\Documents\SecretKey.asc";
+
+        //TODO: add registry save and load and then manual entry text box
         public static string pgpPassFile = @"\\nas3\users\jchavis\Documents\pgpPass.pgp";
 
         public Form1() {
