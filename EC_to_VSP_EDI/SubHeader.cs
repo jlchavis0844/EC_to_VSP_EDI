@@ -21,6 +21,9 @@ namespace EC_to_VSP_EDI {
         private const string ReferenceNumber = "";
         private string BGNDate;
         private string BGNTime;
+        private string BGN05 = "";
+        private string BGN06 = "";
+        private string BGN07 = "";
         private string ReferenceIdentification;
         private const char ActionCode = '4';
         private const string SegmentIDRef = "REF";
@@ -58,9 +61,12 @@ namespace EC_to_VSP_EDI {
             tempSB.AppendLine(SegmentIDST + '*' + TransactionIDCode + '*' + TransactionSetControlNumber + '*' +
                 ImplementationConventionReference + SegmentTerminator);
 
-            tempSB.AppendLine(SegmentIDBGN + '*' + TransactionSetPurpose + '*' + ReferenceNumber + '*' + BGNDate + '*' + BGNTime + '*' +
-                ((TransactionSetPurpose != TransactionSetPurposes.Original) ? "****" : ("*" + TransactionSetPurpose + "*")) +
-                ActionCode + SegmentTerminator);
+            //tempSB.AppendLine(SegmentIDBGN + '*' + TransactionSetPurpose + '*' + ReferenceNumber + '*' + BGNDate + '*' + BGNTime + '*' +
+            //    ((TransactionSetPurpose != TransactionSetPurposes.Original) ? "****" : ("*" + TransactionSetPurpose + "*")) +
+            //    ActionCode + SegmentTerminator);
+
+            tempSB.AppendLine(SegmentIDBGN + '*' + TransactionSetPurpose + '*' + TransactionSetControlNumber + '*' +BGNDate + '*' +BGNTime + '*' +
+                BGN05 + '*' + BGN06 + '*' + BGN07 + '*' + ActionCode + SegmentTerminator);
 
             tempSB.AppendLine(SegmentIDRef + '*' + RefReferenceNumberQualifier + '*' + RefReferenceNumber + SegmentTerminator);
 

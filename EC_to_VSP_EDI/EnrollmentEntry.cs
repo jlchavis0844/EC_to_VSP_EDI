@@ -166,7 +166,7 @@ namespace EC_to_VSP_EDI {
             }
 
             if (row.PlanEffectiveEndDate != null && row.PlanEffectiveEndDate != "") {
-                DateTimePeriod_Start_DTP03 = DateTime.Parse(row.PlanEffectiveEndDate).ToString("yyyyMMdd");
+                DateTimePeriod_End_DTP03 = DateTime.Parse(row.PlanEffectiveEndDate).ToString("yyyyMMdd");
             }
         }
 
@@ -182,18 +182,27 @@ namespace EC_to_VSP_EDI {
             //NM1
             sb.AppendLine(SegmentID_NM1 + '*' +EntityIdentifierCode_NM101 + '*' + EntityTypeQualifier_NM102 + '*' + NameLast_NM103 + '*' 
                 + NameFirst_NM104 + '*' + NameInitial_NM105 + '*' + IdentificationCodeQualifier_NM108 + '*' + IdentificationCode_NM109 + SegmentTerminator);
-            //PER
-            sb.AppendLine(SegmentID_PER + '*' + ContactFunctionCode_PER01 + '*' + ContactName_PER02 + '*' + CommunicationNumberQualifier_PER03 + '*' + 
-                CommunicationNumber_PER04 + SegmentTerminator);
-            //N3
-            sb.AppendLine(SegmentID_N3 + '*' + ResidenceAddressLine1_N301 + '*' + ResidenceAddressLine2_N302 + SegmentTerminator);
-            //N4
-            sb.AppendLine(SegmentID_N4 + '*' + ResidenceCity_N401 + '*' + ResidenceState_N402 + '*' + ResidenceZip_N403 + SegmentTerminator);
-            //DMG
-            sb.AppendLine(SegmentID_DMG + '*' + DateTimeFormatQualifier_DMG01 + '*' + DatetimePeriod_DMG02 + '*' + GenderCode_DMG03 + SegmentTerminator);
+
+            if (SubscriberIndicator_INS01 == 'Y') {
+                //PER
+                sb.AppendLine(SegmentID_PER + '*' + ContactFunctionCode_PER01 + '*' + ContactName_PER02 + '*' + CommunicationNumberQualifier_PER03 + '*' +
+                    CommunicationNumber_PER04 + SegmentTerminator);
+                //N3
+                sb.AppendLine(SegmentID_N3 + '*' + ResidenceAddressLine1_N301 + '*' + ResidenceAddressLine2_N302 + SegmentTerminator);
+                //N4
+                sb.AppendLine(SegmentID_N4 + '*' + ResidenceCity_N401 + '*' + ResidenceState_N402 + '*' + ResidenceZip_N403 + SegmentTerminator);
+                //DMG
+                sb.AppendLine(SegmentID_DMG + '*' + DateTimeFormatQualifier_DMG01 + '*' + DatetimePeriod_DMG02 + '*' + GenderCode_DMG03 + SegmentTerminator);
+            }
+
             //HD
-            sb.AppendLine(SegmentID_HD + '*' + MaintenanceTypeCode_HD01 + '*' + Blank_HD02 + '*' + InsuranceLineCode_HD03 + '*' + Blank_HD04 + '*' + 
-                CoverageLevelCode_HD05 + SegmentTerminator);
+            if (SubscriberIndicator_INS01 == 'Y') {
+                sb.AppendLine(SegmentID_HD + '*' + MaintenanceTypeCode_HD01 + '*' + Blank_HD02 + '*' + InsuranceLineCode_HD03 +
+                '*' + Blank_HD04 + '*' + CoverageLevelCode_HD05 + SegmentTerminator);
+            } else {
+                sb.AppendLine(SegmentID_HD + '*' + MaintenanceTypeCode_HD01 + '*' + Blank_HD02 + '*' + InsuranceLineCode_HD03 + SegmentTerminator);
+            }
+
             //DTP start
             sb.AppendLine(SegmentID_DTP + '*' + BenefitStartDate_DTP01 + '*' + DateTimeFormat_DTP02 + '*' + DateTimePeriod_Start_DTP03 + SegmentTerminator);
             //DTP end

@@ -1,6 +1,6 @@
 ﻿using CsvHelper;
 using log4net;
-using PgpCore;
+//using PgpCore;
 using Syroot.Windows.IO;
 using System;
 using System.Collections.Generic;
@@ -11,6 +11,8 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
+using Org.BouncyCastle.Bcpg.OpenPgp;
+using PgpCore;
 
 namespace EC_to_VSP_EDI {
     public partial class Form1 : Form {
@@ -26,7 +28,7 @@ namespace EC_to_VSP_EDI {
         public static int errorCounter = 0;
 
         //TODO: add ability to load as a file
-        public static string publicKeyFilePath = @"\\nas3\users\jchavis\Documents\VSP.asc";
+        public static string publicKeyFilePath = @"\\nas3\users\jchavis\Documents\PublicKey.asc";
         public static string privateKeyFilePath = @"\\nas3\users\jchavis\Documents\SecretKey.asc";
 
         //TODO: add registry save and load and then manual entry text box
@@ -206,12 +208,15 @@ namespace EC_to_VSP_EDI {
                 }
                 if (pgpPass == null || pgpPass == "")
                     return;
+
                 using (PGP pgp = new PGP()) {
                     log.Info("Writing the output to pgp " + outputFileLocation.Replace("txt", "pgp"));
-                    pgp.EncryptFileAndSign(INPUTFILE, outputFileLocation.Replace("txt", "pgp"),
-                        publicKeyFilePath, privateKeyFilePath, pgpPass, true, true);
+                    //pgp.EncryptFileAndSign(INPUTFILE, outputFileLocation.Replace("txt", "pgp"),
+                    //    publicKeyFilePath, privateKeyFilePath, pgpPass, false, true);
+                    
+
                 }
-            } catch(Exception ex3) {
+            } catch (Exception ex3) {
                 log.Error("ERROR:\n" + ex3);
             }
         }
