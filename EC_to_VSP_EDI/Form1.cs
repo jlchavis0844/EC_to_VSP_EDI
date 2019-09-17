@@ -76,14 +76,18 @@ namespace EC_to_VSP_EDI {
                         csv.Configuration.HasHeaderRecord = true;
                         csv.Configuration.RegisterClassMap<CensusRowClassMap>();
 
-                        records = csv.GetRecords<CensusRow>().Where(rec => rec.CoverageDetails != "Waived" 
-                        && DateTime.Parse(rec.PlanEffectiveEndDate) >= DateTime.Now).ToList()
-                        .Where(rec => 
-                            rec.CoverageDetails != "Waived" && 
-                            DateTime.Parse(rec.PlanEffectiveEndDate) >= DateTime.Now && 
-                            rec.PlanType == "Vision"
-                        ).ToList();
-
+                        try {
+                            records = csv.GetRecords<CensusRow>().Where(rec => rec.CoverageDetails != "Waived"
+                            && DateTime.Parse(rec.PlanEffectiveEndDate) >= DateTime.Now).ToList()
+                            .Where(rec =>
+                                rec.CoverageDetails != "Waived" &&
+                                DateTime.Parse(rec.PlanEffectiveEndDate) >= DateTime.Now &&
+                                rec.PlanType == "Vision"
+                            ).ToList();
+                        } catch (Exception ex) {
+                            log.Error("ERROR loading file\n" + ex);
+                            Console.WriteLine(ex);
+                        }
                         log.Info(records.Count() + " records loaded from Census file.");
                     }
                 } else {

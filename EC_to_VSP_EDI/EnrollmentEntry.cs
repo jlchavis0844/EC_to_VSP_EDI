@@ -84,6 +84,8 @@ namespace EC_to_VSP_EDI {
         //DTP
         public const string SegmentID_DTP = "DTP";
         public const string BenefitStartDate_DTP01 = "348";
+
+        //TODO: Implement coverage end logic
         public const string BenefitEndDate_DTP01 = "349";
         public const string CoverageLevelChange_DTP01 = "303";
         public const string DateTimeFormat_DTP02 = "D8";
@@ -165,7 +167,7 @@ namespace EC_to_VSP_EDI {
                 DateTimePeriod_Start_DTP03 = DateTime.Parse(row.PlanEffectiveStartDate).ToString("yyyyMMdd");
             }
 
-            if (row.PlanEffectiveEndDate != null && row.PlanEffectiveEndDate != "") {
+            if (row.PlanEffectiveEndDate != null && row.PlanEffectiveEndDate != "" && row.ElectionStatus == "Terminated") {
                 DateTimePeriod_End_DTP03 = DateTime.Parse(row.PlanEffectiveEndDate).ToString("yyyyMMdd");
             }
         }
@@ -183,7 +185,7 @@ namespace EC_to_VSP_EDI {
             sb.AppendLine(SegmentID_NM1 + '*' +EntityIdentifierCode_NM101 + '*' + EntityTypeQualifier_NM102 + '*' + NameLast_NM103 + '*' 
                 + NameFirst_NM104 + '*' + NameInitial_NM105 + '*' + IdentificationCodeQualifier_NM108 + '*' + IdentificationCode_NM109 + SegmentTerminator);
 
-            if (SubscriberIndicator_INS01 == 'Y') {
+            if(SubscriberIndicator_INS01 == 'Y') {
                 //PER
                 sb.AppendLine(SegmentID_PER + '*' + ContactFunctionCode_PER01 + '*' + ContactName_PER02 + '*' + CommunicationNumberQualifier_PER03 + '*' +
                     CommunicationNumber_PER04 + SegmentTerminator);
@@ -191,9 +193,9 @@ namespace EC_to_VSP_EDI {
                 sb.AppendLine(SegmentID_N3 + '*' + ResidenceAddressLine1_N301 + '*' + ResidenceAddressLine2_N302 + SegmentTerminator);
                 //N4
                 sb.AppendLine(SegmentID_N4 + '*' + ResidenceCity_N401 + '*' + ResidenceState_N402 + '*' + ResidenceZip_N403 + SegmentTerminator);
-                //DMG
-                sb.AppendLine(SegmentID_DMG + '*' + DateTimeFormatQualifier_DMG01 + '*' + DatetimePeriod_DMG02 + '*' + GenderCode_DMG03 + SegmentTerminator);
             }
+            //DMG
+            sb.AppendLine(SegmentID_DMG + '*' + DateTimeFormatQualifier_DMG01 + '*' + DatetimePeriod_DMG02 + '*' + GenderCode_DMG03 + SegmentTerminator);
 
             //HD
             if (SubscriberIndicator_INS01 == 'Y') {
