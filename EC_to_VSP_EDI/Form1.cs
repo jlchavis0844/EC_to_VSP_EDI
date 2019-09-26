@@ -1,6 +1,5 @@
 ﻿using CsvHelper;
 using log4net;
-//using PgpCore;
 using Syroot.Windows.IO;
 using System;
 using System.Collections.Generic;
@@ -11,8 +10,6 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Windows.Forms;
-using Org.BouncyCastle.Bcpg.OpenPgp;
-using PgpCore;
 
 namespace EC_to_VSP_EDI {
     public partial class Form1 : Form {
@@ -55,40 +52,41 @@ namespace EC_to_VSP_EDI {
             log.Info("Starting form loading at " + DateTime.Now);
         }
 
-        public void btnLoadFile_Click(object sender, EventArgs e) {
+        public void BtnLoadFile_Click(object sender, EventArgs e) {
             log.Info("Load button clicked");
             string type = "csv";
-            
-            using (OpenFileDialog ofd = new OpenFileDialog()) {
+
+            using(OpenFileDialog ofd = new OpenFileDialog()) {
                 ofd.InitialDirectory = KnownFolders.Downloads.Path;
                 ofd.Filter = type + " files (*." + type + ")| *." + type;
                 ofd.FilterIndex = 1;
 
-                if (ofd.ShowDialog() == DialogResult.OK) {
+                if(ofd.ShowDialog() == DialogResult.OK) {
                     INPUTFILE = ofd.FileName;
                     log.Info(INPUTFILE + " loaded");
                     lblFileLocation.Text = INPUTFILE;
                     btnProcessEDI.Enabled = true;
 
-                    using (var reader = new StreamReader(INPUTFILE)) {
-                        var csv = new CsvReader(reader);
-                        csv.Configuration.HeaderValidated = null;
-                        csv.Configuration.HasHeaderRecord = true;
-                        csv.Configuration.RegisterClassMap<CensusRowClassMap>();
+                    using(var reader = new StreamReader(INPUTFILE)) {
+                        using(var csv = new CsvReader(reader)) {
+                            csv.Configuration.HeaderValidated = null;
+                            csv.Configuration.HasHeaderRecord = true;
+                            csv.Configuration.RegisterClassMap<CensusRowClassMap>();
 
-                        try {
-                            records = csv.GetRecords<CensusRow>().Where(rec => rec.CoverageDetails != "Waived"
-                            && DateTime.Parse(rec.PlanEffectiveEndDate) >= DateTime.Now).ToList()
-                            .Where(rec =>
-                                rec.CoverageDetails != "Waived" &&
-                                DateTime.Parse(rec.PlanEffectiveEndDate) >= DateTime.Now &&
-                                rec.PlanType == "Vision"
-                            ).ToList();
-                        } catch (Exception ex) {
-                            log.Error("ERROR loading file\n" + ex);
-                            Console.WriteLine(ex);
+                            try {
+                                records = csv.GetRecords<CensusRow>().Where(rec => rec.CoverageDetails != "Waived"
+                                && DateTime.Parse(rec.PlanEffectiveEndDate) >= DateTime.Now).ToList()
+                                .Where(rec =>
+                                    rec.CoverageDetails != "Waived" &&
+                                    DateTime.Parse(rec.PlanEffectiveEndDate) >= DateTime.Now &&
+                                    rec.PlanType == "Vision"
+                                ).ToList();
+                            } catch(Exception ex) {
+                                log.Error("ERROR loading file\n" + ex);
+                                Console.WriteLine(ex);
+                            }
+                            log.Info(records.Count() + " records loaded from Census file.");
                         }
-                        log.Info(records.Count() + " records loaded from Census file.");
                     }
                 } else {
                     MessageBox.Show("ERROR LOADING INPUT FILE", "ERROR LOADING INPUT FILE", MessageBoxButtons.OK);
@@ -98,15 +96,15 @@ namespace EC_to_VSP_EDI {
             }
         }
 
-        public void button1_Click(object sender, EventArgs e) {
-            if (!File.Exists(lblFileLocation.Text)) {
+        public void Button1_Click(object sender, EventArgs e) {
+            if(!File.Exists(lblFileLocation.Text)) {
                 log.Info("no file found loaded\n" + lblFileLocation);
                 btnProcessEDI.Enabled = false;
                 return;
             }
 
             string type;
-            switch (cbType.SelectedIndex) {
+            switch(cbType.SelectedIndex) {
                 case 1:
                     type = TransactionSetPurposes.Original;
                     break;
@@ -137,7 +135,7 @@ namespace EC_to_VSP_EDI {
             textOut.AppendLine(header.ToString());
             textOut.AppendLine(subHeader.ToString());
 
-            foreach (var line in enrollments) {
+            foreach(var line in enrollments) {
                 textOut.AppendLine(line.ToString());
             }
 
@@ -149,21 +147,22 @@ namespace EC_to_VSP_EDI {
             btnOutput.Enabled = true;
         }
 
-        private void btnSaveFile_Click(object sender, EventArgs e) {
-            FolderBrowserDialog fbd = new FolderBrowserDialog();
-            fbd.Description = "Select the directory to output files to";
-            fbd.ShowNewFolderButton = true;
-            //fbd.RootFolder = Environment.SpecialFolder.MyDocuments;
+        private void BtnSaveFile_Click(object sender, EventArgs e) {
+            using(FolderBrowserDialog fbd = new FolderBrowserDialog()) {
+                fbd.Description = "Select the directory to output files to";
+                fbd.ShowNewFolderButton = true;
+                //fbd.RootFolder = Environment.SpecialFolder.MyDocuments;
 
-            DialogResult result = fbd.ShowDialog();
-            if(result == DialogResult.OK) {
-                outputFolder = fbd.SelectedPath;
-                log.Info("Output directory set to " + outputFolder);
-                lblOutPutFolder.Text = outputFolder;
+                DialogResult result = fbd.ShowDialog();
+                if(result == DialogResult.OK) {
+                    outputFolder = fbd.SelectedPath;
+                    log.Info("Output directory set to " + outputFolder);
+                    lblOutPutFolder.Text = outputFolder;
+                }
             }
         }
 
-        private void btnUpdate_Click(object sender, EventArgs e) {
+        private void BtnUpdate_Click(object sender, EventArgs e) {
             InterchangeTracker.UpdateInterchange();
             string interchangeNumber = InterchangeTracker.GetInterchangeNumber().ToString();
             string dateStr = InterchangeTracker.GetInterchangeDate();
@@ -181,21 +180,21 @@ namespace EC_to_VSP_EDI {
             log.Info("updated interchange to " + InterchangeTracker.ToString());
         }
 
-        private void btnOutput_Click(object sender, EventArgs e) {
+        private void BtnOutput_Click(object sender, EventArgs e) {
             string outputFileLocation = outputFolder + @"\t" + DateTime.Now.ToString("yyyyMMdd") + ".txt";
             log.Info("attempting to save EDI to " + outputFileLocation);
             try {
-                if (!Directory.Exists(outputFolder))
+                if(!Directory.Exists(outputFolder))
                     throw new ArgumentException("File location not valid", "original");
             } catch(Exception ex1) {
-                log.Info("No out location selected.");
+                log.Info("No out location selected." + ex1.Message);
                 lblOutputSave.Text = "Select output folder first";
                 lblOutputSave.ForeColor = Color.Red;
                 lblOutputSave.Font = new Font(lblOutputSave.Font, FontStyle.Bold);
             }
 
             try {
-                using (StreamWriter file = new StreamWriter(outputFileLocation, false)) {
+                using(StreamWriter file = new StreamWriter(outputFileLocation, false)) {
                     file.WriteLine(textOut.ToString());
                     lblOutputSave.Text = "Saved to " + outputFileLocation;
                 }
@@ -207,20 +206,14 @@ namespace EC_to_VSP_EDI {
 
             string pgpPass = "";
             try {
-                using (StreamReader sr = new StreamReader(pgpPassFile)) {
+                using(StreamReader sr = new StreamReader(pgpPassFile)) {
                     pgpPass = sr.ReadToEnd();
                 }
-                if (pgpPass == null || pgpPass == "")
+
+                if(pgpPass == null || pgpPass == "")
                     return;
 
-                using (PGP pgp = new PGP()) {
-                    log.Info("Writing the output to pgp " + outputFileLocation.Replace("txt", "pgp"));
-                    //pgp.EncryptFileAndSign(INPUTFILE, outputFileLocation.Replace("txt", "pgp"),
-                    //    publicKeyFilePath, privateKeyFilePath, pgpPass, false, true);
-                    
-
-                }
-            } catch (Exception ex3) {
+            } catch(Exception ex3) {
                 log.Error("ERROR:\n" + ex3);
             }
         }

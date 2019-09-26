@@ -114,14 +114,14 @@ public class CensusRow {
             MedicalPCPName + " | " + MedicalPCPID + " | " + DentalPCPName + " | " + DentalPCPID + " | " +
             IPANumber + " | " + OBGYN + " | " + BenefitEligibleDate + " | " + UnlockEnrollmentDate + " | " +
             OriginalEffectiveDateInfo + " | " + SubscriberKey + " | " + PlanType + " | " + PlanEffectiveStartDate + " | " +
-            PlanEffectiveEndDate + " | " + PlanAdminName + " | " + PlanDisplayName + " | " +  PlanImportID + " | " +
+            PlanEffectiveEndDate + " | " + PlanAdminName + " | " + PlanDisplayName + " | " + PlanImportID + " | " +
             EffectiveDate + " | " + CoverageDetails + " | " + ElectionStatus + " | " + RiderCodes + " | " +
             Action + " | " + WaiveReason + " | " + PolicyNumber + " | " + SubgroupNumber + " | " +
             AgeDetermination + " | " + Carrier + " | " + TotalRate + " | " + EmployeeRate + " | " +
             SpouseRate + " | " + ChildrenRate + " | " + EmployeeContribution + " | " + EmployeePre_TaxCost + " | " +
             EmployeePost_TaxCost + " | " + EmployeeCostPerDeductionPeriod + " | " + PlanDeductionCycle + " | " +
             LastModifiedDate + " | " + LastModifiedBy + " | " + E_SignDate + " | " + CalPERS_ID;
-        return retStr.Replace("  "," ");
+        return retStr.Replace("  ", " ");
     }
 }
 

@@ -54,7 +54,7 @@ namespace EC_to_VSP_EDI {
             this.btnLoadFile.TabIndex = 0;
             this.btnLoadFile.Text = "Load Census";
             this.btnLoadFile.UseVisualStyleBackColor = true;
-            this.btnLoadFile.Click += new System.EventHandler(this.btnLoadFile_Click);
+            this.btnLoadFile.Click += new System.EventHandler(this.BtnLoadFile_Click);
             // 
             // btnProcessEDI
             // 
@@ -65,7 +65,7 @@ namespace EC_to_VSP_EDI {
             this.btnProcessEDI.TabIndex = 1;
             this.btnProcessEDI.Text = "Process EDI";
             this.btnProcessEDI.UseVisualStyleBackColor = true;
-            this.btnProcessEDI.Click += new System.EventHandler(this.button1_Click);
+            this.btnProcessEDI.Click += new System.EventHandler(this.Button1_Click);
             // 
             // lblFileLocation
             // 
@@ -92,7 +92,7 @@ namespace EC_to_VSP_EDI {
             this.btnUpdate.TabIndex = 4;
             this.btnUpdate.Text = "Update Interchange";
             this.btnUpdate.UseVisualStyleBackColor = true;
-            this.btnUpdate.Click += new System.EventHandler(this.btnUpdate_Click);
+            this.btnUpdate.Click += new System.EventHandler(this.BtnUpdate_Click);
             // 
             // lblInterchangeNumber
             // 
@@ -111,7 +111,7 @@ namespace EC_to_VSP_EDI {
             this.btnSaveFile.TabIndex = 6;
             this.btnSaveFile.Text = "Output Folder";
             this.btnSaveFile.UseVisualStyleBackColor = true;
-            this.btnSaveFile.Click += new System.EventHandler(this.btnSaveFile_Click);
+            this.btnSaveFile.Click += new System.EventHandler(this.BtnSaveFile_Click);
             // 
             // lblOutPutFolder
             // 
@@ -164,7 +164,7 @@ namespace EC_to_VSP_EDI {
             this.btnOutput.TabIndex = 10;
             this.btnOutput.Text = "Output EDI File";
             this.btnOutput.UseVisualStyleBackColor = true;
-            this.btnOutput.Click += new System.EventHandler(this.btnOutput_Click);
+            this.btnOutput.Click += new System.EventHandler(this.BtnOutput_Click);
             // 
             // lblOutputSave
             // 

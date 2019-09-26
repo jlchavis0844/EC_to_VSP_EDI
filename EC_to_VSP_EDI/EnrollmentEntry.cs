@@ -11,25 +11,25 @@ namespace EC_to_VSP_EDI {
 
         //INS
         public const string SegmentID_INS = "INS";
-        public char         SubscriberIndicator_INS01;
-        public string       IndividualRelationshipCode_INS02;
+        public char SubscriberIndicator_INS01;
+        public string IndividualRelationshipCode_INS02;
         public const string MaintenanceTypeCode_INS03 = "030";
-        public       string MaintenanceReasonCode_INS04;
-        public char         BenefitStatusCode_INS05;
+        public string MaintenanceReasonCode_INS04;
+        public char BenefitStatusCode_INS05;
         //public       char   HandicapIndicator_INS06;
 
         //REF
         public const string SegmentID_REF = "REF";
         public const string ReferenceNumberQualifier_REF01 = "0F"; //SSN
-        public string       ReferenceNumber_REF02;
-        public string       ReferenceNumberQualifier2_REF01;
-        public string       ReferenceNumber2_REF02;
+        public string ReferenceNumber_REF02;
+        public string ReferenceNumberQualifier2_REF01;
+        public string ReferenceNumber2_REF02;
         public string ReferenceNumberQualifier3_REF01;
         public string ReferenceNumber3_REF02;
         public const string ReferenceNumberQualifierVSP_REF01 = "DX"; //VSP division
         public string ReferenceNumberVSP_REF02;
 
-        public static List<string> divList0001 = new List<string>{"CLASS-MGMT"};
+        public static List<string> divList0001 = new List<string> { "CLASS-MGMT" };
 
         //NM1
         public const string SegmentID_NM1 = "NM1";
@@ -91,15 +91,15 @@ namespace EC_to_VSP_EDI {
         public const string DateTimeFormat_DTP02 = "D8";
         public string DateTimePeriod_Start_DTP03;
         public string DateTimePeriod_End_DTP03;
-        
+
         //Constructor
         public EnrollmentEntry(CensusRow row) {
-            if (row.RelationshipCode == "0") {
+            if(row.RelationshipCode == "0") {
                 SubscriberIndicator_INS01 = 'Y';
             } else {
                 SubscriberIndicator_INS01 = 'N';
             }
-            
+
             IndividualRelationshipCode_INS02 = RelationshipTranslation(row.RelationshipCode);
             BenefitStatusCode_INS05 = 'A';
 
@@ -107,7 +107,7 @@ namespace EC_to_VSP_EDI {
                              where record.EID == row.EID && record.RelationshipCode == "0"
                              select record.SSN).First().ToString().Replace("-", "");
 
-            if (memberSSN != null && memberSSN != "") {
+            if(memberSSN != null && memberSSN != "") {
                 //ReferenceNumber_REF02 = row.SSN.Replace("-", "");
                 ReferenceNumber_REF02 = memberSSN;
             } else {
@@ -116,8 +116,8 @@ namespace EC_to_VSP_EDI {
             }
 
             string memberDiv = (from record in Form1.records
-                             where record.EID == row.EID && record.RelationshipCode == "0"
-                             select record.JobClass).First().ToString();
+                                where record.EID == row.EID && record.RelationshipCode == "0"
+                                select record.JobClass).First().ToString();
 
             if(divList0001.Contains(memberDiv)) {
                 ReferenceNumberVSP_REF02 = "0001";
@@ -136,7 +136,7 @@ namespace EC_to_VSP_EDI {
                 NameInitial_NM105 = '\0';
             }
 
-            IdentificationCode_NM109 = row.SSN.Replace("-","");
+            IdentificationCode_NM109 = row.SSN.Replace("-", "");
             CommunicationNumberQualifier_PER03 = "HP";
 
             if(row.PersonalPhone != null && row.PersonalPhone != "")
@@ -149,13 +149,13 @@ namespace EC_to_VSP_EDI {
             ResidenceState_N402 = "CA";
             ResidenceZip_N403 = row.Zip;
 
-            if (row.BirthDate != null && row.BirthDate != "") {
+            if(row.BirthDate != null && row.BirthDate != "") {
                 DatetimePeriod_DMG02 = DateTime.Parse(row.BirthDate).ToString("yyyyMMdd");
             }
 
-            if (row.Gender == "Male") {
+            if(row.Gender == "Male") {
                 GenderCode_DMG03 = GenderCodes.Male;
-            } else if (row.Gender == "Female") {
+            } else if(row.Gender == "Female") {
                 GenderCode_DMG03 = GenderCodes.Female;
             } else {
                 GenderCode_DMG03 = GenderCodes.Unknown;
@@ -167,7 +167,7 @@ namespace EC_to_VSP_EDI {
                 DateTimePeriod_Start_DTP03 = DateTime.Parse(row.PlanEffectiveStartDate).ToString("yyyyMMdd");
             }
 
-            if (row.PlanEffectiveEndDate != null && row.PlanEffectiveEndDate != "" && row.ElectionStatus == "Terminated") {
+            if(row.PlanEffectiveEndDate != null && row.PlanEffectiveEndDate != "" && row.ElectionStatus == "Terminated") {
                 DateTimePeriod_End_DTP03 = DateTime.Parse(row.PlanEffectiveEndDate).ToString("yyyyMMdd");
             }
         }
@@ -180,9 +180,9 @@ namespace EC_to_VSP_EDI {
             //REFA
             sb.AppendLine(SegmentID_REF + '*' + ReferenceNumberQualifier_REF01 + '*' + ReferenceNumber_REF02 + SegmentTerminator);
             //REFB
-            sb.AppendLine(SegmentID_REF + '*' + ReferenceNumberQualifierVSP_REF01 + '*' +  ReferenceNumberVSP_REF02 + SegmentTerminator);
+            sb.AppendLine(SegmentID_REF + '*' + ReferenceNumberQualifierVSP_REF01 + '*' + ReferenceNumberVSP_REF02 + SegmentTerminator);
             //NM1
-            sb.AppendLine(SegmentID_NM1 + '*' +EntityIdentifierCode_NM101 + '*' + EntityTypeQualifier_NM102 + '*' + NameLast_NM103 + '*' 
+            sb.AppendLine(SegmentID_NM1 + '*' + EntityIdentifierCode_NM101 + '*' + EntityTypeQualifier_NM102 + '*' + NameLast_NM103 + '*'
                 + NameFirst_NM104 + '*' + NameInitial_NM105 + '*' + IdentificationCodeQualifier_NM108 + '*' + IdentificationCode_NM109 + SegmentTerminator);
 
             if(SubscriberIndicator_INS01 == 'Y') {
@@ -198,7 +198,7 @@ namespace EC_to_VSP_EDI {
             sb.AppendLine(SegmentID_DMG + '*' + DateTimeFormatQualifier_DMG01 + '*' + DatetimePeriod_DMG02 + '*' + GenderCode_DMG03 + SegmentTerminator);
 
             //HD
-            if (SubscriberIndicator_INS01 == 'Y') {
+            if(SubscriberIndicator_INS01 == 'Y') {
                 sb.AppendLine(SegmentID_HD + '*' + MaintenanceTypeCode_HD01 + '*' + Blank_HD02 + '*' + InsuranceLineCode_HD03 +
                 '*' + Blank_HD04 + '*' + CoverageLevelCode_HD05 + SegmentTerminator);
             } else {
@@ -208,7 +208,7 @@ namespace EC_to_VSP_EDI {
             //DTP start
             sb.AppendLine(SegmentID_DTP + '*' + BenefitStartDate_DTP01 + '*' + DateTimeFormat_DTP02 + '*' + DateTimePeriod_Start_DTP03 + SegmentTerminator);
             //DTP end
-            if(DateTimePeriod_End_DTP03 != null && DateTimePeriod_End_DTP03 !="") {
+            if(DateTimePeriod_End_DTP03 != null && DateTimePeriod_End_DTP03 != "") {
                 sb.AppendLine(SegmentID_DTP + '*' + BenefitEndDate_DTP01 + '*' + DateTimeFormat_DTP02 + '*' + DateTimePeriod_End_DTP03 + SegmentTerminator);
             }
 
@@ -216,24 +216,24 @@ namespace EC_to_VSP_EDI {
         }
 
         private string CoverageTranslation(string coverageIn) {
-            if (coverageIn.Contains("Employee") && (coverageIn.Contains("Spouse") || coverageIn.Contains("partner")) && coverageIn.Contains("Child")) {
+            if(coverageIn.Contains("Employee") && (coverageIn.Contains("Spouse") || coverageIn.Contains("partner")) && coverageIn.Contains("Child")) {
                 return CoverageLevels.Family;
-            } else if (coverageIn.Contains("Employee") && (coverageIn.Contains("Spouse") || coverageIn.Contains("partner"))) {
+            } else if(coverageIn.Contains("Employee") && (coverageIn.Contains("Spouse") || coverageIn.Contains("partner"))) {
                 return CoverageLevels.EmployeeSpouse;
-            } else if (coverageIn.Contains("Employee") && coverageIn.Contains("Child")) {
+            } else if(coverageIn.Contains("Employee") && coverageIn.Contains("Child")) {
                 return CoverageLevels.EmployeeCHD;
-            } else if (coverageIn.Contains("Employee")) {
+            } else if(coverageIn.Contains("Employee")) {
                 return CoverageLevels.Individual;
             } else return null;
         }
 
         private string RelationshipTranslation(string relIn) {
-            switch (relIn) {
+            switch(relIn) {
                 case "0":
                     return "18";
 
                 case "1":
-                    if (relIn.Contains("Part")) {
+                    if(relIn.Contains("Part")) {
                         return "53";
                     } else {
                         return "01";
@@ -245,7 +245,7 @@ namespace EC_to_VSP_EDI {
         }
 
         private char MaritalTranslation(string statusIn) {
-            switch (statusIn) {
+            switch(statusIn) {
                 case "Married":
                     return MaritalStatusCodes.Married;
 
