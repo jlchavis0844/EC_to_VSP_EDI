@@ -1,7 +1,7 @@
-﻿using System;
-using System.Windows.Forms;
+﻿namespace EC_to_VSP_EDI {
+    using System;
+    using System.Windows.Forms;
 
-namespace EC_to_VSP_EDI {
     static class Program {
         /// <summary>
         /// The main entry point for the application.

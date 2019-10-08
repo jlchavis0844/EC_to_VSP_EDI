@@ -69,6 +69,7 @@
     <Compile Include="Form1.Designer.cs">
       <DependentUpon>Form1.cs</DependentUpon>
     </Compile>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Header.cs" />
     <Compile Include="InterchangeTracker.cs" />
     <Compile Include="Program.cs" />
@@ -105,6 +106,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="favicon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Analyzer Include="..\packages\StyleCop.Analyzers.Unstable.1.2.0.66\analyzers\dotnet\cs\StyleCop.Analyzers.CodeFixes.dll" />
+    <Analyzer Include="..\packages\StyleCop.Analyzers.Unstable.1.2.0.66\analyzers\dotnet\cs\StyleCop.Analyzers.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
