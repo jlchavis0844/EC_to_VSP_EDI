@@ -150,7 +150,7 @@ namespace EC_to_VSP_EDI {
             this.tbTextOut.Location = new System.Drawing.Point(4, 4);
             this.tbTextOut.Multiline = true;
             this.tbTextOut.Name = "tbTextOut";
-            this.tbTextOut.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.tbTextOut.ScrollBars = System.Windows.Forms.ScrollBars.Both;
             this.tbTextOut.Size = new System.Drawing.Size(845, 524);
             this.tbTextOut.TabIndex = 0;
             // 

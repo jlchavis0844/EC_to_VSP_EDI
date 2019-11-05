@@ -58,8 +58,9 @@
             string type = "csv";
 
             using (OpenFileDialog ofd = new OpenFileDialog()) {
-                ofd.InitialDirectory = KnownFolders.Downloads.Path;
+                //ofd.InitialDirectory = KnownFolders.Downloads.Path;
                 ofd.Filter = type + " files (*." + type + ")| *." + type;
+                ofd.RestoreDirectory = true;
                 ofd.FilterIndex = 1;
 
                 if (ofd.ShowDialog() == DialogResult.OK) {
@@ -67,21 +68,22 @@
                     Log.Info(INPUTFILE + " loaded");
                     this.lblFileLocation.Text = INPUTFILE;
                     this.btnProcessEDI.Enabled = true;
-
-                    using (var reader = new StreamReader(INPUTFILE)) {
+                    var loadedFile = File.Open(INPUTFILE, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                    using (var reader = new StreamReader(loadedFile)) {
                         using (var csv = new CsvReader(reader)) {
                             csv.Configuration.HeaderValidated = null;
                             csv.Configuration.HasHeaderRecord = true;
                             csv.Configuration.RegisterClassMap<CensusRowClassMap>();
 
                             try {
-                                Records = csv.GetRecords<CensusRow>().Where(rec => rec.CoverageDetails != "Waived"
-                                && DateTime.Parse(rec.PlanEffectiveEndDate) >= DateTime.Now).ToList()
-                                .Where(rec =>
-                                    rec.CoverageDetails != "Waived" &&
-                                    DateTime.Parse(rec.PlanEffectiveEndDate) >= DateTime.Now &&
-                                    rec.PlanType == "Vision")
-                                .ToList();
+                                //Records = csv.GetRecords<CensusRow>().Where(rec => rec.CoverageDetails != "Waived"
+                                //&& DateTime.Parse(rec.PlanEffectiveEndDate) >= DateTime.Now).ToList()
+                                //.Where(rec =>
+                                //    rec.CoverageDetails != "Waived" &&
+                                //    DateTime.Parse(rec.PlanEffectiveEndDate) >= DateTime.Now &&
+                                //    rec.PlanType == "Vision")
+                                //.ToList();
+                                Records = csv.GetRecords<CensusRow>().ToList();
                             } catch (Exception ex) {
                                 Log.Error("ERROR loading file\n" + ex);
                                 Console.WriteLine(ex);
@@ -144,7 +146,7 @@
             TextOut.AppendLine(Trailer.ToString());
             TextOut = new StringBuilder(TextOut.ToString().Replace("\r\n\r\n", "\r\n"));
 
-            this.tbTextOut.MaxLength = int.MaxValue;
+            //this.tbTextOut.MaxLength = int.MaxValue;
             this.tbTextOut.Text = TextOut.ToString();
             this.btnOutput.Enabled = true;
         }

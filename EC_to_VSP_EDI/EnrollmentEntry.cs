@@ -37,7 +37,7 @@
         public const char EntityTypeQualifier_NM102 = '1';
         public string NameLast_NM103;
         public string NameFirst_NM104;
-        public char NameInitial_NM105;
+        public string NameInitial_NM105;
         public const string IdentificationCodeQualifier_NM108 = "34";
         public string IdentificationCode_NM109;// SSN
 
@@ -93,6 +93,7 @@
         public const string DateTimeFormat_DTP02 = "D8";
         public string DateTimePeriod_Start_DTP03;
         public string DateTimePeriod_End_DTP03;
+        public string DateTimePeriod_FamChange;
 
         // Constructor
         public EnrollmentEntry(CensusRow row) {
@@ -133,16 +134,17 @@
             this.NameFirst_NM104 = row.FirstName;
 
             if (row.MiddleName.Length > 0) {
-                this.NameInitial_NM105 = row.MiddleName[0];
+                this.NameInitial_NM105 = row.MiddleName.Substring(0,1);
             } else {
-                this.NameInitial_NM105 = '\0';
+                this.NameInitial_NM105 = string.Empty;
             }
 
             this.IdentificationCode_NM109 = row.SSN.Replace("-", string.Empty);
             this.CommunicationNumberQualifier_PER03 = "HP";
 
-            if (row.PersonalPhone != null && row.PersonalPhone != string.Empty)
+            if (row.PersonalPhone != null && row.PersonalPhone != string.Empty) {
                 this.CommunicationNumber_PER04 = Regex.Replace(row.PersonalPhone, "[^0-9]", string.Empty);
+            }
 
             this.CommunicationNumber_PER06 = row.Email;
             this.ResidenceAddressLine1_N301 = row.Address1;
@@ -169,8 +171,13 @@
                 this.DateTimePeriod_Start_DTP03 = DateTime.Parse(row.PlanEffectiveStartDate).ToString("yyyyMMdd");
             }
 
-            if (row.PlanEffectiveEndDate != null && row.PlanEffectiveEndDate != string.Empty && row.ElectionStatus == "Terminated") {
-                this.DateTimePeriod_End_DTP03 = DateTime.Parse(row.PlanEffectiveEndDate).ToString("yyyyMMdd");
+            if (row.Drop == "TRUE") {
+                //this.DateTimePeriod_End_DTP03 = DateTime.Parse(row.PlanEffectiveEndDate).ToString("yyyyMMdd");
+                this.DateTimePeriod_End_DTP03 = "20191231";
+            }
+
+            if(row.FamChange == "TRUE") {
+                DateTimePeriod_FamChange = "20200101";
             }
         }
 
@@ -220,6 +227,10 @@
             // DTP end
             if (this.DateTimePeriod_End_DTP03 != null && this.DateTimePeriod_End_DTP03 != string.Empty) {
                 sb.AppendLine(SegmentID_DTP + '*' + BenefitEndDate_DTP01 + '*' + DateTimeFormat_DTP02 + '*' + this.DateTimePeriod_End_DTP03 + SegmentTerminator);
+            }
+
+            if (!string.IsNullOrEmpty(this.DateTimePeriod_FamChange)){
+                sb.AppendLine(SegmentID_DTP + '*' + CoverageLevelChange_DTP01 + '*' + DateTimeFormat_DTP02 + '*' + this.DateTimePeriod_FamChange + SegmentTerminator);
             }
 
             return sb.ToString();

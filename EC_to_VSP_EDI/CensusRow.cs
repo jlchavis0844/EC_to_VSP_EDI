@@ -92,7 +92,9 @@ public class CensusRow {
     public string LastModifiedBy { get; set; }
     public string E_SignDate { get; set; }
     public string CalPERS_ID { get; set; }
-
+    public string Add { get; set; }
+    public string Drop { get; set; }
+    public string FamChange { get; set; }
     // public string EnrolledBy { get; set; }
     // public string NewBusiness { get; set; }
 
@@ -119,7 +121,8 @@ public class CensusRow {
             this.AgeDetermination + " | " + this.Carrier + " | " + this.TotalRate + " | " + this.EmployeeRate + " | " +
             this.SpouseRate + " | " + this.ChildrenRate + " | " + this.EmployeeContribution + " | " + this.EmployeePre_TaxCost + " | " +
             this.EmployeePost_TaxCost + " | " + this.EmployeeCostPerDeductionPeriod + " | " + this.PlanDeductionCycle + " | " +
-            this.LastModifiedDate + " | " + this.LastModifiedBy + " | " + this.E_SignDate + " | " + this.CalPERS_ID;
+            this.LastModifiedDate + " | " + this.LastModifiedBy + " | " + this.E_SignDate + " | " + this.CalPERS_ID + " | " +
+            this.Add + " | " +this.Drop + " | " + this.FamChange;
         return retStr.Replace("  ", " ");
     }
 }
@@ -217,6 +220,9 @@ public class CensusRowClassMap : ClassMap<CensusRow> {
         this.Map(m => m.LastModifiedBy).Name("Last Modified By");
         this.Map(m => m.E_SignDate).Name("E-Sign Date");
         this.Map(m => m.CalPERS_ID).Name("CalPERS ID");
+        this.Map(m => m.Add).Name("Add");
+        this.Map(m => m.Drop).Name("Drop");
+        this.Map(m => m.FamChange).Name("FamChange");
 
         // Map(m => m.EnrolledBy).Name("Enrolled By");
         // Map(m => m.NewBusiness).Name("New Business");
