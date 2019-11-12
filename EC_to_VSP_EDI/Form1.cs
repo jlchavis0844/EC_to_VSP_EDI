@@ -84,6 +84,7 @@
                                 //    rec.PlanType == "Vision")
                                 //.ToList();
                                 Records = csv.GetRecords<CensusRow>().ToList();
+                                lblFileLocation_cnt.Text = "Loaded Records = " + Records.Count;
                             } catch (Exception ex) {
                                 Log.Error("ERROR loading file\n" + ex);
                                 Console.WriteLine(ex);
@@ -149,6 +150,8 @@
             //this.tbTextOut.MaxLength = int.MaxValue;
             this.tbTextOut.Text = TextOut.ToString();
             this.btnOutput.Enabled = true;
+            lblProcessedCnt.Text = Enrollments.Count().ToString() + " enrollments listed";
+            //Enrollments.Count().Where();
         }
 
         private void BtnSaveFile_Click(object sender, EventArgs e) {
@@ -185,7 +188,8 @@
         }
 
         private void BtnOutput_Click(object sender, EventArgs e) {
-            string outputFileLocation = OutputFolder + @"\t" + DateTime.Now.ToString("yyyyMMdd") + ".txt";
+            //string outputFileLocation = OutputFolder + @"\t" + DateTime.Now.ToString("yyyyMMdd") + ".txt";
+            string outputFileLocation = OutputFolder + @"\T8005054.txt";
             Log.Info("attempting to save EDI to " + outputFileLocation);
             try {
                 if (!Directory.Exists(OutputFolder)) {

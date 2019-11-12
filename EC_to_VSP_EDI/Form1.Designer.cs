@@ -42,6 +42,8 @@ namespace EC_to_VSP_EDI {
             this.cbType = new System.Windows.Forms.ComboBox();
             this.lblFileType = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.lblFileLocation_cnt = new System.Windows.Forms.Label();
+            this.lblProcessedCnt = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
@@ -208,11 +210,32 @@ namespace EC_to_VSP_EDI {
             this.pictureBox1.TabIndex = 14;
             this.pictureBox1.TabStop = false;
             // 
+            // lblFileLocation_cnt
+            // 
+            this.lblFileLocation_cnt.AutoSize = true;
+            this.lblFileLocation_cnt.Location = new System.Drawing.Point(161, 34);
+            this.lblFileLocation_cnt.Name = "lblFileLocation_cnt";
+            this.lblFileLocation_cnt.Size = new System.Drawing.Size(97, 13);
+            this.lblFileLocation_cnt.TabIndex = 15;
+            this.lblFileLocation_cnt.Text = "Waiting for count...";
+            // 
+            // lblProcessedCnt
+            // 
+            this.lblProcessedCnt.AutoSize = true;
+            this.lblProcessedCnt.Location = new System.Drawing.Point(695, 142);
+            this.lblProcessedCnt.Name = "lblProcessedCnt";
+            this.lblProcessedCnt.Size = new System.Drawing.Size(16, 13);
+            this.lblProcessedCnt.TabIndex = 16;
+            this.lblProcessedCnt.Text = "...";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(879, 744);
+            this.Controls.Add(this.lblProcessedCnt);
+            this.Controls.Add(this.lblFileLocation);
+            this.Controls.Add(this.lblFileLocation_cnt);
             this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.lblFileType);
             this.Controls.Add(this.cbType);
@@ -225,7 +248,6 @@ namespace EC_to_VSP_EDI {
             this.Controls.Add(this.lblInterchangeNumber);
             this.Controls.Add(this.btnUpdate);
             this.Controls.Add(this.dtPicker);
-            this.Controls.Add(this.lblFileLocation);
             this.Controls.Add(this.btnProcessEDI);
             this.Controls.Add(this.btnLoadFile);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -257,6 +279,8 @@ namespace EC_to_VSP_EDI {
         private ComboBox cbType;
         private Label lblFileType;
         private PictureBox pictureBox1;
+        private Label lblFileLocation_cnt;
+        private Label lblProcessedCnt;
     }
 }
 

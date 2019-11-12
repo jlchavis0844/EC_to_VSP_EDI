@@ -167,9 +167,13 @@
 
             this.MaritalStatusCode_DMG04 = this.MaritalTranslation(row.MaritalStatus);
             this.CoverageLevelCode_HD05 = this.CoverageTranslation(row.CoverageDetails);
+
             if (row.PlanEffectiveStartDate != null && row.PlanEffectiveStartDate != string.Empty) {
                 this.DateTimePeriod_Start_DTP03 = DateTime.Parse(row.PlanEffectiveStartDate).ToString("yyyyMMdd");
             }
+
+            //***********Just set it to 1/1/2020 for OE*********************************
+            DateTimePeriod_Start_DTP03 = "20200101";
 
             if (row.Drop == "TRUE") {
                 //this.DateTimePeriod_End_DTP03 = DateTime.Parse(row.PlanEffectiveEndDate).ToString("yyyyMMdd");
@@ -221,17 +225,20 @@
                 sb.AppendLine(SegmentID_HD + '*' + MaintenanceTypeCode_HD01 + '*' + Blank_HD02 + '*' + InsuranceLineCode_HD03 + SegmentTerminator);
             }
 
-            // DTP start
-            sb.AppendLine(SegmentID_DTP + '*' + BenefitStartDate_DTP01 + '*' + DateTimeFormat_DTP02 + '*' + this.DateTimePeriod_Start_DTP03 + SegmentTerminator);
-
-            // DTP end
-            if (this.DateTimePeriod_End_DTP03 != null && this.DateTimePeriod_End_DTP03 != string.Empty) {
-                sb.AppendLine(SegmentID_DTP + '*' + BenefitEndDate_DTP01 + '*' + DateTimeFormat_DTP02 + '*' + this.DateTimePeriod_End_DTP03 + SegmentTerminator);
+            // DTP start - only show on add
+            if (this.DateTimePeriod_Start_DTP03 != null) {
+                sb.AppendLine(SegmentID_DTP + '*' + BenefitStartDate_DTP01 + '*' + DateTimeFormat_DTP02 + '*' + this.DateTimePeriod_Start_DTP03 + SegmentTerminator);
             }
 
-            if (!string.IsNullOrEmpty(this.DateTimePeriod_FamChange)){
-                sb.AppendLine(SegmentID_DTP + '*' + CoverageLevelChange_DTP01 + '*' + DateTimeFormat_DTP02 + '*' + this.DateTimePeriod_FamChange + SegmentTerminator);
-            }
+            // DTP end - only show on drop
+            //if (this.DateTimePeriod_End_DTP03 != null && this.DateTimePeriod_End_DTP03 != string.Empty) {
+            //    sb.AppendLine(SegmentID_DTP + '*' + BenefitEndDate_DTP01 + '*' + DateTimeFormat_DTP02 + '*' + this.DateTimePeriod_End_DTP03 + SegmentTerminator);
+            //}
+
+            //Fam change, only show on coverage level change
+            //if (!string.IsNullOrEmpty(this.DateTimePeriod_FamChange)){
+            //    sb.AppendLine(SegmentID_DTP + '*' + CoverageLevelChange_DTP01 + '*' + DateTimeFormat_DTP02 + '*' + this.DateTimePeriod_FamChange + SegmentTerminator);
+            //}
 
             return sb.ToString();
         }
