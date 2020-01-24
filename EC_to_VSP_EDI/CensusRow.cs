@@ -70,8 +70,10 @@ public class CensusRow {
     public string PlanDisplayName { get; set; }
     public string PlanImportID { get; set; }
     public string EffectiveDate { get; set; }
+    public string ActivityDate { get; set; }
     public string CoverageDetails { get; set; }
     public string ElectionStatus { get; set; }
+    public string ProcessedDate { get; set; }
     public string RiderCodes { get; set; }
     public string Action { get; set; }
     public string WaiveReason { get; set; }
@@ -84,19 +86,20 @@ public class CensusRow {
     public string SpouseRate { get; set; }
     public string ChildrenRate { get; set; }
     public string EmployeeContribution { get; set; }
-    public string EmployeePre_TaxCost { get; set; }
-    public string EmployeePost_TaxCost { get; set; }
+    public string EmployeePreTaxCost { get; set; }
+    public string EmployeePostTaxCost { get; set; }
     public string EmployeeCostPerDeductionPeriod { get; set; }
     public string PlanDeductionCycle { get; set; }
     public string LastModifiedDate { get; set; }
     public string LastModifiedBy { get; set; }
-    public string E_SignDate { get; set; }
+    public string ESignDate { get; set; }
     public string CalPERS_ID { get; set; }
+    public string EnrolledBy { get; set; }
+    public string NewBusiness { get; set; }
+    public string VSPCode { get; set; }
     public string Add { get; set; }
     public string Drop { get; set; }
-    public string FamChange { get; set; }
-    // public string EnrolledBy { get; set; }
-    // public string NewBusiness { get; set; }
+
 
     // override to print all frields in a CensusRow
     public override string ToString() {
@@ -119,10 +122,10 @@ public class CensusRow {
             this.EffectiveDate + " | " + this.CoverageDetails + " | " + this.ElectionStatus + " | " + this.RiderCodes + " | " +
             this.Action + " | " + this.WaiveReason + " | " + this.PolicyNumber + " | " + this.SubgroupNumber + " | " +
             this.AgeDetermination + " | " + this.Carrier + " | " + this.TotalRate + " | " + this.EmployeeRate + " | " +
-            this.SpouseRate + " | " + this.ChildrenRate + " | " + this.EmployeeContribution + " | " + this.EmployeePre_TaxCost + " | " +
-            this.EmployeePost_TaxCost + " | " + this.EmployeeCostPerDeductionPeriod + " | " + this.PlanDeductionCycle + " | " +
-            this.LastModifiedDate + " | " + this.LastModifiedBy + " | " + this.E_SignDate + " | " + this.CalPERS_ID + " | " +
-            this.Add + " | " +this.Drop + " | " + this.FamChange;
+            this.SpouseRate + " | " + this.ChildrenRate + " | " + this.EmployeeContribution + " | " + this.EmployeePreTaxCost + " | " +
+            this.EmployeePostTaxCost + " | " + this.EmployeeCostPerDeductionPeriod + " | " + this.PlanDeductionCycle + " | " +
+            this.LastModifiedDate + " | " + this.LastModifiedBy + " | " + this.ESignDate + " | " + this.CalPERS_ID + " | " +
+            this.Add + " | " +this.Drop;
         return retStr.Replace("  ", " ");
     }
 }
@@ -198,8 +201,10 @@ public class CensusRowClassMap : ClassMap<CensusRow> {
         this.Map(m => m.PlanDisplayName).Name("Plan Display Name");
         this.Map(m => m.PlanImportID).Name("Plan Import ID");
         this.Map(m => m.EffectiveDate).Name("Effective Date");
+        this.Map(m => m.ActivityDate).Name("Activity Date");
         this.Map(m => m.CoverageDetails).Name("Coverage Details");
         this.Map(m => m.ElectionStatus).Name("Election Status");
+        this.Map(m => m.ProcessedDate).Name("Processed Date");
         this.Map(m => m.RiderCodes).Name("Rider Codes");
         this.Map(m => m.Action).Name("Action");
         this.Map(m => m.WaiveReason).Name("Waive Reason");
@@ -212,17 +217,18 @@ public class CensusRowClassMap : ClassMap<CensusRow> {
         this.Map(m => m.SpouseRate).Name("Spouse Rate");
         this.Map(m => m.ChildrenRate).Name("Children Rate");
         this.Map(m => m.EmployeeContribution).Name("Employee Contribution");
-        this.Map(m => m.EmployeePre_TaxCost).Name("Employee Pre-Tax Cost");
-        this.Map(m => m.EmployeePost_TaxCost).Name("Employee Post-Tax Cost");
+        this.Map(m => m.EmployeePreTaxCost).Name("Employee Pre-Tax Cost");
+        this.Map(m => m.EmployeePostTaxCost).Name("Employee Post-Tax Cost");
         this.Map(m => m.EmployeeCostPerDeductionPeriod).Name("Employee Cost Per Deduction Period");
         this.Map(m => m.PlanDeductionCycle).Name("Plan Deduction Cycle");
         this.Map(m => m.LastModifiedDate).Name("Last Modified Date");
         this.Map(m => m.LastModifiedBy).Name("Last Modified By");
-        this.Map(m => m.E_SignDate).Name("E-Sign Date");
+        this.Map(m => m.ESignDate).Name("E-Sign Date");
         this.Map(m => m.CalPERS_ID).Name("CalPERS ID");
-        this.Map(m => m.Add).Name("Add");
-        this.Map(m => m.Drop).Name("Drop");
-        this.Map(m => m.FamChange).Name("FamChange");
+        this.Map(m => m.EnrolledBy).Name("Enrolled By");
+        this.Map(m => m.NewBusiness).Name("New Business");
+        this.Map(m => m.VSPCode).Name("VSP Code");
+
 
         // Map(m => m.EnrolledBy).Name("Enrolled By");
         // Map(m => m.NewBusiness).Name("New Business");

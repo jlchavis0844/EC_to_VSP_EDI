@@ -29,7 +29,7 @@
         public const string ReferenceNumberQualifierVSP_REF01 = "DX"; // VSP division
         public string ReferenceNumberVSP_REF02;
 
-        public static List<string> DivList0001 = new List<string> { "CLASS-MGMT" };
+        //public static List<string> DivList0001 = new List<string> { "CLASS-MGMT" };
 
         // NM1
         public const string SegmentID_NM1 = "NM1";
@@ -103,7 +103,7 @@
                 this.SubscriberIndicator_INS01 = 'N';
             }
 
-            this.IndividualRelationshipCode_INS02 = this.RelationshipTranslation(row.RelationshipCode);
+            this.IndividualRelationshipCode_INS02 = this.RelationshipTranslation(row);
             this.BenefitStatusCode_INS05 = 'A';
 
             var memberSSN = (from record in Form1.Records
@@ -122,12 +122,20 @@
                                 where record.EID == row.EID && record.RelationshipCode == "0"
                                 select record.JobClass).First().ToString();
 
-            if (DivList0001.Contains(memberDiv)) {
-                this.ReferenceNumberVSP_REF02 = "0001";
-                Form1.Log.Info(row.FirstName + " " + row.LastName + "\t" + memberDiv + "\t" + row.JobClass);
+            //if (DivList0001.Contains(memberDiv)) {
+            //    this.ReferenceNumberVSP_REF02 = "0001";
+            //    Form1.Log.Info(row.FirstName + " " + row.LastName + "\t" + memberDiv + "\t" + row.JobClass);
+            //} else {
+            //    this.ReferenceNumberVSP_REF02 = "0002";
+            //    Form1.Log.Info(row.FirstName + " " + row.LastName + "\t" + memberDiv + "\t" + row.JobClass);
+            //}
+
+            if (string.IsNullOrEmpty(row.VSPCode)) {
+                System.Windows.Forms.MessageBox.Show("ERROR: Missing VSP Code for this line:\n" + row.ToString(),
+                    "Missing VSP Code", System.Windows.Forms.MessageBoxButtons.OK);
+                ReferenceNumberVSP_REF02 = "";
             } else {
-                this.ReferenceNumberVSP_REF02 = "0002";
-                Form1.Log.Info(row.FirstName + " " + row.LastName + "\t" + memberDiv + "\t" + row.JobClass);
+                ReferenceNumberVSP_REF02 = "00" + row.VSPCode;
             }
 
             this.NameLast_NM103 = row.LastName;
@@ -168,21 +176,21 @@
             this.MaritalStatusCode_DMG04 = this.MaritalTranslation(row.MaritalStatus);
             this.CoverageLevelCode_HD05 = this.CoverageTranslation(row.CoverageDetails);
 
-            if (row.PlanEffectiveStartDate != null && row.PlanEffectiveStartDate != string.Empty) {
-                this.DateTimePeriod_Start_DTP03 = DateTime.Parse(row.PlanEffectiveStartDate).ToString("yyyyMMdd");
+            if (row.EffectiveDate != null && row.EffectiveDate != string.Empty) {
+                this.DateTimePeriod_Start_DTP03 = DateTime.Parse(row.EffectiveDate).ToString("yyyyMMdd");
             }
 
             //***********Just set it to 1/1/2020 for OE*********************************
-            DateTimePeriod_Start_DTP03 = "20200101";
+            //DateTimePeriod_Start_DTP03 = "20200101";
 
             if (row.Drop == "TRUE") {
                 //this.DateTimePeriod_End_DTP03 = DateTime.Parse(row.PlanEffectiveEndDate).ToString("yyyyMMdd");
                 this.DateTimePeriod_End_DTP03 = "20191231";
             }
 
-            if(row.FamChange == "TRUE") {
-                DateTimePeriod_FamChange = "20200101";
-            }
+            //if(row.FamChange == "TRUE") {
+            //    DateTimePeriod_FamChange = "20200101";
+            //}
         }
 
         public new string ToString() {
@@ -255,13 +263,30 @@
             } else return null;
         }
 
-        private string RelationshipTranslation(string relIn) {
-            switch (relIn) {
+        //private string RelationshipTranslation(string relIn) {
+        //    switch (relIn) {
+        //        case "0":
+        //            return "18";
+
+        //        case "1":
+        //            if (relIn.Contains("Part")) {
+        //                return "53";
+        //            } else {
+        //                return "01";
+        //            }
+
+        //        default:
+        //            return "19";
+        //    }
+        //}
+
+        private string RelationshipTranslation(CensusRow rowIn) {
+            switch (rowIn.RelationshipCode) {
                 case "0":
                     return "18";
 
                 case "1":
-                    if (relIn.Contains("Part")) {
+                    if (rowIn.Relationship.Contains("Part")) {
                         return "53";
                     } else {
                         return "01";
