@@ -97,8 +97,6 @@ public class CensusRow {
     public string EnrolledBy { get; set; }
     public string NewBusiness { get; set; }
     public string VSPCode { get; set; }
-    public string Add { get; set; }
-    public string Drop { get; set; }
 
 
     // override to print all frields in a CensusRow
@@ -124,8 +122,8 @@ public class CensusRow {
             this.AgeDetermination + " | " + this.Carrier + " | " + this.TotalRate + " | " + this.EmployeeRate + " | " +
             this.SpouseRate + " | " + this.ChildrenRate + " | " + this.EmployeeContribution + " | " + this.EmployeePreTaxCost + " | " +
             this.EmployeePostTaxCost + " | " + this.EmployeeCostPerDeductionPeriod + " | " + this.PlanDeductionCycle + " | " +
-            this.LastModifiedDate + " | " + this.LastModifiedBy + " | " + this.ESignDate + " | " + this.CalPERS_ID + " | " +
-            this.Add + " | " +this.Drop;
+            this.LastModifiedDate + " | " + this.LastModifiedBy + " | " + this.ESignDate + " | " + this.CalPERS_ID;
+
         return retStr.Replace("  ", " ");
     }
 }

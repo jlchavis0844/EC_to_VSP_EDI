@@ -77,7 +77,7 @@
 
         // HD
         public const string SegmentID_HD = "HD";
-        public const string MaintenanceTypeCode_HD01 = "030";
+        public readonly string MaintenanceTypeCode_HD01;
         public const string Blank_HD02 = "";
         public const string InsuranceLineCode_HD03 = "VIS";
         public const string Blank_HD04 = "";
@@ -95,15 +95,28 @@
         public string DateTimePeriod_End_DTP03;
         public string DateTimePeriod_FamChange;
 
+        public CensusRow myRow;
+
         // Constructor
         public EnrollmentEntry(CensusRow row) {
+            myRow = row;
             if (row.RelationshipCode == "0") {
                 this.SubscriberIndicator_INS01 = 'Y';
             } else {
                 this.SubscriberIndicator_INS01 = 'N';
             }
 
-            this.IndividualRelationshipCode_INS02 = this.RelationshipTranslation(row);
+            if (row.ElectionStatus.ToUpper() == "DROP") {
+                this.MaintenanceTypeCode_HD01 = "024";
+            } else if (row.ElectionStatus.ToUpper() == "ADD") {
+                this.MaintenanceTypeCode_HD01 = "021";
+            } else if(row.ElectionStatus.ToUpper() == "UPDATE") {
+                this.MaintenanceTypeCode_HD01 = "001";
+            } else {
+                this.MaintenanceTypeCode_HD01 = "030";
+            }
+
+                this.IndividualRelationshipCode_INS02 = this.RelationshipTranslation(row);
             this.BenefitStatusCode_INS05 = 'A';
 
             var memberSSN = (from record in Form1.Records
@@ -183,10 +196,10 @@
             //***********Just set it to 1/1/2020 for OE*********************************
             //DateTimePeriod_Start_DTP03 = "20200101";
 
-            if (row.Drop == "TRUE") {
-                //this.DateTimePeriod_End_DTP03 = DateTime.Parse(row.PlanEffectiveEndDate).ToString("yyyyMMdd");
-                this.DateTimePeriod_End_DTP03 = "20191231";
-            }
+            //if (row.Drop == "TRUE") {
+            //    //this.DateTimePeriod_End_DTP03 = DateTime.Parse(row.PlanEffectiveEndDate).ToString("yyyyMMdd");
+            //    this.DateTimePeriod_End_DTP03 = "20191231";
+            //}
 
             //if(row.FamChange == "TRUE") {
             //    DateTimePeriod_FamChange = "20200101";
@@ -233,15 +246,19 @@
                 sb.AppendLine(SegmentID_HD + '*' + MaintenanceTypeCode_HD01 + '*' + Blank_HD02 + '*' + InsuranceLineCode_HD03 + SegmentTerminator);
             }
 
-            // DTP start - only show on add
-            if (this.DateTimePeriod_Start_DTP03 != null) {
+            // DTP start -always show
+            if (this.DateTimePeriod_Start_DTP03 != null && MaintenanceTypeCode_HD01 != "024") {
                 sb.AppendLine(SegmentID_DTP + '*' + BenefitStartDate_DTP01 + '*' + DateTimeFormat_DTP02 + '*' + this.DateTimePeriod_Start_DTP03 + SegmentTerminator);
+            } else {
+                sb.AppendLine(SegmentID_DTP + '*' + BenefitStartDate_DTP01 + '*' + DateTimeFormat_DTP02 + '*' +
+                    DateTime.Parse(this.myRow.PlanEffectiveStartDate).ToString("yyyyMMdd") + SegmentTerminator);
             }
 
-            // DTP end - only show on drop
-            //if (this.DateTimePeriod_End_DTP03 != null && this.DateTimePeriod_End_DTP03 != string.Empty) {
-            //    sb.AppendLine(SegmentID_DTP + '*' + BenefitEndDate_DTP01 + '*' + DateTimeFormat_DTP02 + '*' + this.DateTimePeriod_End_DTP03 + SegmentTerminator);
-            //}
+            //DTP end -only show on drop
+            if (MaintenanceTypeCode_HD01 == "024") {
+                sb.AppendLine(SegmentID_DTP + '*' + BenefitEndDate_DTP01 + '*' + DateTimeFormat_DTP02 + '*' +
+                    DateTime.Parse(this.myRow.EffectiveDate).AddDays(-1).ToString("yyyyMMdd") + SegmentTerminator);
+            }
 
             //Fam change, only show on coverage level change
             //if (!string.IsNullOrEmpty(this.DateTimePeriod_FamChange)){
