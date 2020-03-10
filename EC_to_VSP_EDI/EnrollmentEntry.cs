@@ -144,9 +144,17 @@
             //}
 
             if (string.IsNullOrEmpty(row.VSPCode)) {
-                System.Windows.Forms.MessageBox.Show("ERROR: Missing VSP Code for this line:\n" + row.ToString(),
-                    "Missing VSP Code", System.Windows.Forms.MessageBoxButtons.OK);
-                ReferenceNumberVSP_REF02 = "";
+                var memberVSPCode = (from record in Form1.Records
+                                 where record.EID == row.EID && record.RelationshipCode == "0"
+                                 select record.VSPCode).First().ToString();
+                if (string.IsNullOrEmpty(memberVSPCode)) {
+                    System.Windows.Forms.MessageBox.Show("ERROR: Missing VSP Code for this line:\n" + row.ToString(),
+                        "Missing VSP Code", System.Windows.Forms.MessageBoxButtons.OK);
+
+                    ReferenceNumberVSP_REF02 = string.Empty;
+                } else {
+                    ReferenceNumberVSP_REF02 = "00" + memberVSPCode;
+                }
             } else {
                 ReferenceNumberVSP_REF02 = "00" + row.VSPCode;
             }
@@ -269,13 +277,15 @@
         }
 
         private string CoverageTranslation(string coverageIn) {
-            if (coverageIn.Contains("Employee") && (coverageIn.Contains("Spouse") || coverageIn.Contains("partner")) && coverageIn.Contains("Child")) {
+            string covIn = coverageIn.ToUpper();
+
+            if (covIn.Contains("EMPLOYEE") && (covIn.Contains("SPOUSE") || covIn.Contains("PARTNER")) && covIn.Contains("CHILD")) {
                 return CoverageLevels.Family;
-            } else if (coverageIn.Contains("Employee") && (coverageIn.Contains("Spouse") || coverageIn.Contains("partner"))) {
+            } else if (covIn.Contains("EMPLOYEE") && (covIn.Contains("SPOUSE") || covIn.Contains("PARTNER"))) {
                 return CoverageLevels.EmployeeSpouse;
-            } else if (coverageIn.Contains("Employee") && coverageIn.Contains("Child")) {
+            } else if (covIn.Contains("EMPLOYEE") && covIn.Contains("CHILD")) {
                 return CoverageLevels.EmployeeCHD;
-            } else if (coverageIn.Contains("Employee")) {
+            } else if (covIn.Contains("EMPLOYEE")) {
                 return CoverageLevels.Individual;
             } else return null;
         }
