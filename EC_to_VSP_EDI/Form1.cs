@@ -3,6 +3,7 @@
     using System.Collections.Generic;
     using System.Data;
     using System.Drawing;
+    using System.Globalization;
     using System.IO;
     using System.Linq;
     using System.Reflection;
@@ -68,9 +69,10 @@
                     Log.Info(INPUTFILE + " loaded");
                     this.lblFileLocation.Text = INPUTFILE;
                     this.btnProcessEDI.Enabled = true;
-                    var loadedFile = File.Open(INPUTFILE, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                    var loadedFile = File.Open(INPUTFILE, FileMode.Open, FileAccess.Read, 
+                        FileShare.ReadWrite);
                     using (var reader = new StreamReader(loadedFile)) {
-                        using (var csv = new CsvReader(reader)) {
+                        using (var csv = new CsvReader(reader, CultureInfo.InvariantCulture)) {
                             csv.Configuration.HeaderValidated = null;
                             csv.Configuration.HasHeaderRecord = true;
                             csv.Configuration.RegisterClassMap<CensusRowClassMap>();
@@ -158,7 +160,7 @@
             using (FolderBrowserDialog fbd = new FolderBrowserDialog()) {
                 fbd.Description = "Select the directory to output files to";
                 fbd.ShowNewFolderButton = true;
-
+                fbd.SelectedPath = Path.GetDirectoryName(INPUTFILE);
                 // fbd.RootFolder = Environment.SpecialFolder.MyDocuments;
                 DialogResult result = fbd.ShowDialog();
                 if (result == DialogResult.OK) {
@@ -189,7 +191,13 @@
 
         private void BtnOutput_Click(object sender, EventArgs e) {
             //string outputFileLocation = OutputFolder + @"\t" + DateTime.Now.ToString("yyyyMMdd") + ".txt";
-            string outputFileLocation = OutputFolder + @"\T8005054.txt";
+            string outputFileLocation = string.Empty;
+            if (cbType.SelectedIndex == 0) {
+                outputFileLocation = OutputFolder + @"\T8005054.txt";
+            } else {
+                outputFileLocation = OutputFolder + @"\a8005054.txt";
+            }
+
             Log.Info("attempting to save EDI to " + outputFileLocation);
             try {
                 if (!Directory.Exists(OutputFolder)) {
