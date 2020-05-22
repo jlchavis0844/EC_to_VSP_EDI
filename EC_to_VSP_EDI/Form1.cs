@@ -26,11 +26,11 @@
         public static int ErrorCounter = 0;
 
         // TODO: add ability to load as a file
-        public static string PublicKeyFilePath = @"\\nas3\users\jchavis\Documents\PublicKey.asc";
-        public static string PrivateKeyFilePath = @"\\nas3\users\jchavis\Documents\SecretKey.asc";
+        //public static string PublicKeyFilePath = @"\\nas3\users\jchavis\Documents\PublicKey.asc";
+        //public static string PrivateKeyFilePath = @"\\nas3\users\jchavis\Documents\SecretKey.asc";
 
-        // TODO: add registry save and load and then manual entry text box
-        public static string PgpPassFile = @"\\nas3\users\jchavis\Documents\pgpPass.pgp";
+        //// TODO: add registry save and load and then manual entry text box
+        //public static string PgpPassFile = @"\\nas3\users\jchavis\Documents\pgpPass.pgp";
 
         public Form1() {
             this.InitializeComponent();
@@ -219,19 +219,6 @@
                 Log.Info("saved output to " + outputFileLocation);
             } catch (Exception ex) {
                 Log.Error("ERROR\n" + ex);
-            }
-
-            string pgpPass = string.Empty;
-            try {
-                using (StreamReader sr = new StreamReader(PgpPassFile)) {
-                    pgpPass = sr.ReadToEnd();
-                }
-
-                if (pgpPass == null || pgpPass == string.Empty) {
-                    return;
-                }
-            } catch (Exception ex3) {
-                Log.Error("ERROR:\n" + ex3);
             }
         }
     }

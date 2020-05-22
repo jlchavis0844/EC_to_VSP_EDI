@@ -135,14 +135,6 @@
                                 where record.EID == row.EID && record.RelationshipCode == "0"
                                 select record.JobClass).First().ToString();
 
-            //if (DivList0001.Contains(memberDiv)) {
-            //    this.ReferenceNumberVSP_REF02 = "0001";
-            //    Form1.Log.Info(row.FirstName + " " + row.LastName + "\t" + memberDiv + "\t" + row.JobClass);
-            //} else {
-            //    this.ReferenceNumberVSP_REF02 = "0002";
-            //    Form1.Log.Info(row.FirstName + " " + row.LastName + "\t" + memberDiv + "\t" + row.JobClass);
-            //}
-
             if (string.IsNullOrEmpty(row.VSPCode)) {
                 var memberVSPCode = (from record in Form1.Records
                                  where record.EID == row.EID && record.RelationshipCode == "0"
