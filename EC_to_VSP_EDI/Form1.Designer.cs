@@ -1,6 +1,6 @@
 ﻿using System.Windows.Forms;
 
-namespace EC_to_VSP_EDI {
+namespace EC_to_BCBS_EDI {
     partial class Form1 {
         /// <summary>
         /// Required designer variable.
@@ -41,11 +41,9 @@ namespace EC_to_VSP_EDI {
             this.lblOutputSave = new System.Windows.Forms.Label();
             this.cbType = new System.Windows.Forms.ComboBox();
             this.lblFileType = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.lblFileLocation_cnt = new System.Windows.Forms.Label();
             this.lblProcessedCnt = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // btnLoadFile
@@ -200,16 +198,6 @@ namespace EC_to_VSP_EDI {
             this.lblFileType.TabIndex = 13;
             this.lblFileType.Text = "File Type:";
             // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(523, 12);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(341, 128);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pictureBox1.TabIndex = 14;
-            this.pictureBox1.TabStop = false;
-            // 
             // lblFileLocation_cnt
             // 
             this.lblFileLocation_cnt.AutoSize = true;
@@ -236,7 +224,6 @@ namespace EC_to_VSP_EDI {
             this.Controls.Add(this.lblProcessedCnt);
             this.Controls.Add(this.lblFileLocation);
             this.Controls.Add(this.lblFileLocation_cnt);
-            this.Controls.Add(this.pictureBox1);
             this.Controls.Add(this.lblFileType);
             this.Controls.Add(this.cbType);
             this.Controls.Add(this.lblOutputSave);
@@ -252,10 +239,9 @@ namespace EC_to_VSP_EDI {
             this.Controls.Add(this.btnLoadFile);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
-            this.Text = "Ease Enrollment Census to VSP 834 EDI";
+            this.Text = "Ease Enrollment Census to BCBS 834 EDI";
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -265,7 +251,7 @@ namespace EC_to_VSP_EDI {
 
         public System.Windows.Forms.Button btnLoadFile;
         public System.Windows.Forms.Button btnProcessEDI;
-        private System.Windows.Forms.Label lblFileLocation;
+        public System.Windows.Forms.Label lblFileLocation;
         private System.Windows.Forms.DateTimePicker dtPicker;
         private System.Windows.Forms.Button btnUpdate;
         private System.Windows.Forms.Label lblInterchangeNumber;
@@ -276,9 +262,8 @@ namespace EC_to_VSP_EDI {
         private System.Windows.Forms.TextBox tbTextOut;
         private Button btnOutput;
         private Label lblOutputSave;
-        private ComboBox cbType;
+        public ComboBox cbType;
         private Label lblFileType;
-        private PictureBox pictureBox1;
         private Label lblFileLocation_cnt;
         private Label lblProcessedCnt;
     }

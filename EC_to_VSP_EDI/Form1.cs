@@ -1,4 +1,4 @@
-﻿namespace EC_to_VSP_EDI {
+﻿namespace EC_to_BCBS_EDI {
     using System;
     using System.Collections.Generic;
     using System.Data;
@@ -20,6 +20,7 @@
         public static Trailer Trailer;
         public static List<EnrollmentEntry> Enrollments = new List<EnrollmentEntry>();
         public static List<CensusRow> Records = new List<CensusRow>();
+        public static List<CensusRow> DentalRecords = new List<CensusRow>();
         public static string OutputFolder;
         public static StringBuilder TextOut;
         public static int ErrorCounter = 0;
@@ -83,7 +84,11 @@
                                 //    DateTime.Parse(rec.PlanEffectiveEndDate) >= DateTime.Now &&
                                 //    rec.PlanType == "Vision")
                                 //.ToList();
-                                Records = csv.GetRecords<CensusRow>().ToList();
+                                //Records = csv.GetRecords<CensusRow>().Where( rec =>
+                                   //rec.CoverageDetails != "Waived" && rec.CoverageDetails != "Terminated"
+                                    //&& rec.PlanType.Contains("Vis")
+                                    //).ToList();
+                                    Records = csv.GetRecords<CensusRow>().ToList();
                                 lblFileLocation_cnt.Text = "Loaded Records = " + Records.Count;
                             } catch (Exception ex) {
                                 Log.Error("ERROR loading file\n" + ex);
@@ -102,6 +107,7 @@
         }
 
         public void Button1_Click(object sender, EventArgs e) {
+            Enrollments.Clear();
             if (!File.Exists(this.lblFileLocation.Text)) {
                 Log.Info("no file found loaded\n" + this.lblFileLocation);
                 this.btnProcessEDI.Enabled = false;
@@ -128,7 +134,9 @@
             }
 
             SubHeader = new SubHeader(type);
-            Header = new Header(type);
+
+            char usage = (this.cbType.SelectedIndex == 0) ? 'T' : 'P'; 
+            Header = new Header(usage);
 
             foreach (var row in Records) {
                 Enrollments.Add(new EnrollmentEntry(row));
@@ -140,14 +148,54 @@
             TextOut.AppendLine(Header.ToString());
             TextOut.AppendLine(SubHeader.ToString());
 
+            //eliminate trailing element seperators
+            List<string> TESList = new List<string>();
             foreach (var line in Enrollments) {
-                TextOut.AppendLine(line.ToString());
+                TESList.Add(line.ToString());
+            }
+
+            while (TESList.Count(cnt => cnt.Contains("*~")) >0) {
+                for (int i = 0; i < TESList.Count; i++) {
+                    TESList[i] = TESList[i].Replace("*~", "~");
+                }
+            }
+
+            foreach (string line in TESList) {
+                TextOut.AppendLine(line);
             }
 
             TextOut.AppendLine(Trailer.ToString());
             TextOut = new StringBuilder(TextOut.ToString().Replace("\r\n\r\n", "\r\n"));
+            string[] segments = TextOut.ToString().Split('\n');
+
+            string[] SE_Segs = segments[segments.Length - 4].Split('*');
+            Console.WriteLine(segments[segments.Length - 4]);
+
+            SE_Segs[1] = (segments.ToList().Count(ew => ew.Length > 3)-4).ToString();
+            string NewSE = SE_Segs[0] + '*'+SE_Segs[1] + '*'+SE_Segs[2];
+            segments[segments.Length - 4] = NewSE;
+
+            TextOut.Clear();
+
+            foreach(string seg in segments){
+                if (string.IsNullOrEmpty(seg) || seg.Length <= 1)
+                    continue;
+
+                string cleanSeg = seg.Replace("\n", "");
+                cleanSeg = cleanSeg.Replace("\r", "");
+
+                if (string.IsNullOrEmpty(seg) || seg.Length <= 1)
+                    continue;
+
+                TextOut.AppendLine(cleanSeg);
+            }
+
+
+            Console.WriteLine(segments[segments.Length - 4]);
+
 
             //this.tbTextOut.MaxLength = int.MaxValue;
+            TextOut = new StringBuilder(TextOut.ToString().Replace("\n\n","").Replace("\r\r",""));
             this.tbTextOut.Text = TextOut.ToString();
             this.btnOutput.Enabled = true;
             lblProcessedCnt.Text = Enrollments.Count().ToString() + " enrollments listed";
@@ -188,8 +236,10 @@
         }
 
         private void BtnOutput_Click(object sender, EventArgs e) {
-            //string outputFileLocation = OutputFolder + @"\t" + DateTime.Now.ToString("yyyyMMdd") + ".txt";
-            string outputFileLocation = OutputFolder + @"\T8005054.txt";
+            //string outputFileLocation = OutputFolder + @"\Test_HTL_" + DateTime.Now.ToString("yyyyMMdd") + ".txt";
+            string outputFileLocation = OutputFolder + @"\hmetwn28.8345010.m.prod";
+            //string outputFileLocation = OutputFolder + @"\T8005054.txt";
+
             Log.Info("attempting to save EDI to " + outputFileLocation);
             try {
                 if (!Directory.Exists(OutputFolder)) {
@@ -204,7 +254,9 @@
 
             try {
                 using (StreamWriter file = new StreamWriter(outputFileLocation, false)) {
-                    file.WriteLine(TextOut.ToString());
+                    string temp = TextOut.ToString().Replace("\r", "").Replace("\n\n", "");
+                    temp = temp.Substring(0, temp.Length - 1);
+                    file.WriteLine(temp);
                     this.lblOutputSave.Text = "Saved to " + outputFileLocation;
                 }
 
@@ -213,18 +265,51 @@
                 Log.Error("ERROR\n" + ex);
             }
 
-            string pgpPass = string.Empty;
-            try {
-                using (StreamReader sr = new StreamReader(PgpPassFile)) {
-                    pgpPass = sr.ReadToEnd();
-                }
+            //string pgpPass = string.Empty;
+            //try {
+            //    using (StreamReader sr = new StreamReader(PgpPassFile)) {
+            //        pgpPass = sr.ReadToEnd();
+            //    }
 
-                if (pgpPass == null || pgpPass == string.Empty) {
-                    return;
-                }
-            } catch (Exception ex3) {
-                Log.Error("ERROR:\n" + ex3);
+            //    if (pgpPass == null || pgpPass == string.Empty) {
+            //        return;
+            //    }
+            //} catch (Exception ex3) {
+            //    Log.Error("ERROR:\n" + ex3);
+            //}
+        }
+
+        public string GetFileLocation() {
+            return lblFileLocation.Text;
+        }
+
+        public bool ErrorCheck(CensusRow row) {
+            bool failed = false;
+
+            if (string.IsNullOrEmpty(row.Address1)) {
+                return true;
             }
+
+            if (string.IsNullOrEmpty(row.BirthDate)) {
+                return true;
+            }
+
+            if (string.IsNullOrEmpty(row.Gender)) { 
+                return true;
+            }
+
+            if (string.IsNullOrEmpty(row.HireDate)) {
+                return true;
+            }
+
+            if (string.IsNullOrEmpty(row.LastName)) {
+                return true;
+            }
+
+            if (string.IsNullOrEmpty(row.FirstName)) {
+                return true;
+            }
+            return false;
         }
     }
 }

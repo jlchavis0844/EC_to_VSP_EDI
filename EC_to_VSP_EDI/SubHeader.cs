@@ -1,12 +1,13 @@
-﻿namespace EC_to_VSP_EDI {
+﻿namespace EC_to_BCBS_EDI {
     using System;
     using System.Text;
 
     public class SubHeader {
         private const string SegmentIDGS = "GS";
         private const string FunctionalIDCode = "BE";
-        private const string SenderID = "94-2239786";
-        private const string ReceiverID = "94-1632821";
+        private const string SenderID = "82-3606235";
+        private const string ReceiverID_GS03 = "630103830";
+        private const string ReceiverID = "61-0647538";
         private readonly string gSDate;
         private readonly string gSTime;
         private readonly uint groupControlNumber;
@@ -30,18 +31,18 @@
         private const char ActionCode = '4';
         private const string SegmentIDRef = "REF";
         private const string RefReferenceNumberQualifier = "38";
-        private const string RefReferenceNumber = "8005054";
+        private const string RefReferenceNumber = "789100";
         private const string N1SegmentID = "N1";
         private const string EntityIdentCodeSponser = "P5";
 
         // private const string PlanSponser = "Sponser Name";
         private const string N1IdentificationCodeQualifier = "FI";
         private const string N1BEntityIdentifierCode = "IN";
-        private const string N1BName = "Vision Service Plan";
+        private const string N1BName = "BCBS";
 
         // private const string N1BIdentificationCode = "94-1632821";
         private const string N1CEntityIdentifierCode = "TV";
-        private const string N1CName = "TDS Group";
+        private const string N1CName = "HomeTown Lenders";
 
         // private const string N1BIdentificationCodeQualifier = "FI";
         // private const string N1CIdentificationCode = "30-0369656";
@@ -60,27 +61,29 @@
 
         public new string ToString() {
             StringBuilder tempSB = new StringBuilder();
-            tempSB.AppendLine(SegmentIDGS + '*' + FunctionalIDCode + '*' + SenderID + '*' + ReceiverID + '*' + this.gSDate + '*' + this.gSTime + '*' +
+            tempSB.AppendLine(SegmentIDGS + '*' + FunctionalIDCode + '*' + SenderID + '*' + ReceiverID_GS03 + '*' + this.gSDate + '*' + this.gSTime + '*' +
                 this.groupControlNumber + '*' + ResponsibleAgencyCode + '*' + VersionReleaseCode + SegmentTerminator);
 
             tempSB.AppendLine(SegmentIDST + '*' + TransactionIDCode + '*' + this.transactionSetControlNumber + '*' +
                 ImplementationConventionReference + SegmentTerminator);
 
             // tempSB.AppendLine(SegmentIDBGN + '*' + TransactionSetPurpose + '*' + ReferenceNumber + '*' + BGNDate + '*' + BGNTime + '*' +
-            //    ((TransactionSetPurpose != TransactionSetPurposes.Original) ? "****" : ("*" + TransactionSetPurpose + "*")) +
-            //    ActionCode + SegmentTerminator);
+               // ((TransactionSetPurpose != TransactionSetPurposes.Original) ? "****" : ("*" + TransactionSetPurpose + "*")) +
+               // ActionCode + SegmentTerminator);
+
             tempSB.AppendLine(SegmentIDBGN + '*' + this.transactionSetPurpose + '*' + this.transactionSetControlNumber + '*' + this.bGNDate + '*' + this.bGNTime + '*' +
                 BGN05 + '*' + BGN06 + '*' + BGN07 + '*' + ActionCode + SegmentTerminator);
 
-            tempSB.AppendLine(SegmentIDRef + '*' + RefReferenceNumberQualifier + '*' + RefReferenceNumber + SegmentTerminator);
+
+            //tempSB.AppendLine(SegmentIDRef + '*' + RefReferenceNumberQualifier + '*' + RefReferenceNumber + SegmentTerminator);
 
             tempSB.AppendLine(N1SegmentID + '*' + EntityIdentCodeSponser + '*' + N1CName + '*' +
-                N1IdentificationCodeQualifier + '*' + SenderID + SegmentTerminator);
+                N1IdentificationCodeQualifier + "*63-0103830" + SegmentTerminator);
 
             tempSB.AppendLine(N1SegmentID + '*' + N1BEntityIdentifierCode + '*' + N1BName + '*' +
                 N1IdentificationCodeQualifier + '*' + ReceiverID + SegmentTerminator);
 
-            tempSB.AppendLine(N1SegmentID + '*' + N1CEntityIdentifierCode + '*' + N1CName + '*' + N1IdentificationCodeQualifier + '*' +
+            tempSB.AppendLine(N1SegmentID + '*' + N1CEntityIdentifierCode + "*Enroll Pros*" + N1IdentificationCodeQualifier + '*' +
                 SenderID + SegmentTerminator);
             return tempSB.ToString();
         }

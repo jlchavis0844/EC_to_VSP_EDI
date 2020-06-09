@@ -95,6 +95,9 @@ public class CensusRow {
     public string Add { get; set; }
     public string Drop { get; set; }
     public string FamChange { get; set; }
+
+    public string Dental { get; set; }
+    public string Vision { get; set; }
     // public string EnrolledBy { get; set; }
     // public string NewBusiness { get; set; }
 
@@ -170,8 +173,8 @@ public class CensusRowClassMap : ClassMap<CensusRow> {
         this.Map(m => m.SickHours).Name("Sick Hours");
         this.Map(m => m.PersonalHours).Name("Personal Hours");
         this.Map(m => m.W2Wages).Name("W2 Wages");
-        this.Map(m => m.Compensation).Name("Compensation");
-        this.Map(m => m.CompensationType).Name("Compensation Type");
+        this.Map(m => m.Compensation).Name("Benefit Compensation Amount");
+        this.Map(m => m.CompensationType).Name("Benefit Compensation Type");
         this.Map(m => m.PayCycle).Name("Pay Cycle");
         this.Map(m => m.PayPeriods).Name("Pay Periods");
         this.Map(m => m.CostFactor).Name("Cost Factor");
@@ -219,12 +222,14 @@ public class CensusRowClassMap : ClassMap<CensusRow> {
         this.Map(m => m.LastModifiedDate).Name("Last Modified Date");
         this.Map(m => m.LastModifiedBy).Name("Last Modified By");
         this.Map(m => m.E_SignDate).Name("E-Sign Date");
-        this.Map(m => m.CalPERS_ID).Name("CalPERS ID");
-        this.Map(m => m.Add).Name("Add");
-        this.Map(m => m.Drop).Name("Drop");
-        this.Map(m => m.FamChange).Name("FamChange");
+        //this.Map(m => m.CalPERS_ID).Name("CalPERS ID");
+        //this.Map(m => m.Add).Name("Add");
+        //this.Map(m => m.Drop).Name("Drop");
+        //this.Map(m => m.FamChange).Name("FamChange");
 
         // Map(m => m.EnrolledBy).Name("Enrolled By");
-        // Map(m => m.NewBusiness).Name("New Business");
+        //// Map(m => m.NewBusiness).Name("New Business");
+        //this.Map(m => m.Dental).Name("Dental");
+        //this.Map(m => m.Vision).Name("Vision");
     }
 }
