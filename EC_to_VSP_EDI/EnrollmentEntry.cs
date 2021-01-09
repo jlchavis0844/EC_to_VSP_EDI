@@ -81,7 +81,7 @@
         public const string SegmentID_DMG = "DMG";
         public const string DateTimeFormatQualifier_DMG01 = "D8";
         public string DatetimePeriod_DMG02;
-        public string GenderCode_DMG03;
+        public string SexCode_DMG03;
         public char MaritalStatusCode_DMG04;
         public char RaceCode_DMG05;
         public char CitizenshipStatusCode__DMG06;
@@ -138,6 +138,9 @@
             //    InsuranceLineCode_HD03 = "DEN";
             //    ReferenceNumber2_REF02 = "78910003AL3V0181001";
             //}
+
+            if (row.LastName == "Baugh")
+                Console.WriteLine("Baugh");
 
             if (row.PlanAdminName.Contains("MVP")) {
                 ReferenceNumber2_REF02 = "30642002";
@@ -202,18 +205,18 @@
             this.ResidenceAddressLine2_N302 = row.Address2;
             this.ResidenceCity_N401 = row.City;
             this.ResidenceState_N402 = this.GetStateByName(row.State);
-            this.ResidenceZip_N403 = row.Zip;
+            this.ResidenceZip_N403 = row.Zip.Substring(0, 5);
 
             if (row.BirthDate != null && row.BirthDate != string.Empty) {
                 this.DatetimePeriod_DMG02 = DateTime.Parse(row.BirthDate).ToString("yyyyMMdd");
             }
 
-            if (row.Gender == "Male") {
-                this.GenderCode_DMG03 = GenderCodes.Male;
-            } else if (row.Gender == "Female") {
-                this.GenderCode_DMG03 = GenderCodes.Female;
+            if (row.Sex == "Male") {
+                this.SexCode_DMG03 = SexCodes.Male;
+            } else if (row.Sex == "Female") {
+                this.SexCode_DMG03 = SexCodes.Female;
             } else {
-                this.GenderCode_DMG03 = GenderCodes.Unknown;
+                this.SexCode_DMG03 = SexCodes.Unknown;
             }
 
             this.MaritalStatusCode_DMG04 = this.MaritalTranslation(row.MaritalStatus);
@@ -282,7 +285,7 @@
             }
 
             // DMG
-            sb.AppendLine(SegmentID_DMG + '*' + DateTimeFormatQualifier_DMG01 + '*' + this.DatetimePeriod_DMG02 + '*' + this.GenderCode_DMG03 + '*' + MaritalStatusCode_DMG04 + SegmentTerminator);
+            sb.AppendLine(SegmentID_DMG + '*' + DateTimeFormatQualifier_DMG01 + '*' + this.DatetimePeriod_DMG02 + '*' + this.SexCode_DMG03 + '*' + MaritalStatusCode_DMG04 + SegmentTerminator);
             
             if (this.SubscriberIndicator_INS01 == 'Y') {
                 sb.AppendLine(SegmentID_HD + '*' + MaintenanceTypeCode_HD01 + '*' + Blank_HD02 + '*' + InsuranceLineCode_HD03 +

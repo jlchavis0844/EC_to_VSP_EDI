@@ -27,7 +27,7 @@ namespace EC_to_BCBS_EDI {
         public static char SurvivingInsured = 'S';
     }
 
-    public static class GenderCodes {
+    public static class SexCodes {
         public static string Male = "M";
         public static string Female = "F";
         public static string Unknown = string.Empty;

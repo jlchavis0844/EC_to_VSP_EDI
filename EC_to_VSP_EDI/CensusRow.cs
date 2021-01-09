@@ -10,7 +10,7 @@ public class CensusRow {
     public string Relationship { get; set; }
     public string RelationshipCode { get; set; }
     public string SSN { get; set; }
-    public string Gender { get; set; }
+    public string Sex { get; set; }
     public string BirthDate { get; set; }
     public string Race { get; set; }
     public string Citizenship { get; set; }
@@ -105,7 +105,7 @@ public class CensusRow {
     public override string ToString() {
         string retStr = this.CompanyName + " | " + this.EID + " | " + this.Location + " | " + this.FirstName + " | " +
             this.MiddleName + " | " + this.LastName + " | " + this.Relationship + " | " + this.RelationshipCode + " | " +
-            this.SSN + " | " + this.Gender + " | " + this.BirthDate + " | " + this.Race + " | " + this.Citizenship + " | " +
+            this.SSN + " | " + this.Sex + " | " + this.BirthDate + " | " + this.Race + " | " + this.Citizenship + " | " +
             this.Address1 + " | " + this.Address2 + " | " + this.City + " | " + this.State + " | " + this.Zip + " | " +
             this.County + " | " + this.Country + " | " + this.PersonalPhone + " | " + this.WorkPhone + " | " +
             this.MobilePhone + " | " + this.Email + " | " + this.PersonalEmail + " | " + this.EmployeeType + " | " +
@@ -141,7 +141,7 @@ public class CensusRowClassMap : ClassMap<CensusRow> {
         this.Map(m => m.Relationship).Name("Relationship");
         this.Map(m => m.RelationshipCode).Name("Relationship Code");
         this.Map(m => m.SSN).Name("SSN");
-        this.Map(m => m.Gender).Name("Gender");
+        this.Map(m => m.Sex).Name("Sex");
         this.Map(m => m.BirthDate).Name("Birth Date");
         this.Map(m => m.Race).Name("Race");
         this.Map(m => m.Citizenship).Name("Citizenship");
@@ -173,8 +173,8 @@ public class CensusRowClassMap : ClassMap<CensusRow> {
         this.Map(m => m.SickHours).Name("Sick Hours");
         this.Map(m => m.PersonalHours).Name("Personal Hours");
         this.Map(m => m.W2Wages).Name("W2 Wages");
-        this.Map(m => m.Compensation).Name("Benefit Compensation Amount");
-        this.Map(m => m.CompensationType).Name("Benefit Compensation Type");
+        //this.Map(m => m.Compensation).Name("Benefit Compensation Amount");
+        //this.Map(m => m.CompensationType).Name("Benefit Compensation Type");
         this.Map(m => m.PayCycle).Name("Pay Cycle");
         this.Map(m => m.PayPeriods).Name("Pay Periods");
         this.Map(m => m.CostFactor).Name("Cost Factor");

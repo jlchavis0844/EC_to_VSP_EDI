@@ -294,7 +294,7 @@
                 return true;
             }
 
-            if (string.IsNullOrEmpty(row.Gender)) { 
+            if (string.IsNullOrEmpty(row.Sex)) { 
                 return true;
             }
 
