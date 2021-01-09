@@ -1,4 +1,4 @@
-﻿namespace EC_to_VSP_EDI {
+﻿namespace EC_to_Humana_EDI {
     using System;
     using System.Windows.Forms;
 

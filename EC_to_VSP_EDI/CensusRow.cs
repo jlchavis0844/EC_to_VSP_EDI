@@ -10,7 +10,7 @@ public class CensusRow {
     public string Relationship { get; set; }
     public string RelationshipCode { get; set; }
     public string SSN { get; set; }
-    public string Gender { get; set; }
+    public string Sex { get; set; }
     public string BirthDate { get; set; }
     public string Race { get; set; }
     public string Citizenship { get; set; }
@@ -42,8 +42,8 @@ public class CensusRow {
     public string SickHours { get; set; }
     public string PersonalHours { get; set; }
     public string W2Wages { get; set; }
-    public string Compensation { get; set; }
-    public string CompensationType { get; set; }
+    public string BenefitCompensationAmount { get; set; }
+    public string BenefitCompensationType { get; set; }
     public string PayCycle { get; set; }
     public string PayPeriods { get; set; }
     public string CostFactor { get; set; }
@@ -95,6 +95,10 @@ public class CensusRow {
     public string Add { get; set; }
     public string Drop { get; set; }
     public string FamChange { get; set; }
+    public string ActivityDate { get; set; }
+
+    public string Dental { get; set; }
+    public string Vision { get; set; }
     // public string EnrolledBy { get; set; }
     // public string NewBusiness { get; set; }
 
@@ -102,14 +106,14 @@ public class CensusRow {
     public override string ToString() {
         string retStr = this.CompanyName + " | " + this.EID + " | " + this.Location + " | " + this.FirstName + " | " +
             this.MiddleName + " | " + this.LastName + " | " + this.Relationship + " | " + this.RelationshipCode + " | " +
-            this.SSN + " | " + this.Gender + " | " + this.BirthDate + " | " + this.Race + " | " + this.Citizenship + " | " +
+            this.SSN + " | " + this.Sex + " | " + this.BirthDate + " | " + this.Race + " | " + this.Citizenship + " | " +
             this.Address1 + " | " + this.Address2 + " | " + this.City + " | " + this.State + " | " + this.Zip + " | " +
             this.County + " | " + this.Country + " | " + this.PersonalPhone + " | " + this.WorkPhone + " | " +
             this.MobilePhone + " | " + this.Email + " | " + this.PersonalEmail + " | " + this.EmployeeType + " | " +
             this.EmployeeStatus + " | " + this.HireDate + " | " + this.TerminationDate + " | " + this.Department + " | " +
             this.Division + " | " + this.JobClass + " | " + this.JobTitle + " | " + this.MaritalStatus + " | " + this.MaritalDate + " | " +
             this.MaritalLocation + " | " + this.StudentStatus + " | " + this.ScheduledHours + " | " + this.SickHours + " | " +
-            this.PersonalHours + " | " + this.W2Wages + " | " + this.Compensation + " | " + this.CompensationType + " | " +
+            this.PersonalHours + " | " + this.W2Wages + " | " + this.BenefitCompensationAmount + " | " + this.BenefitCompensationType + " | " +
             this.PayCycle + " | " + this.PayPeriods + " | " + this.CostFactor + " | " + this.TobaccoUser + " | " + this.Disabled + " | " +
             this.MedicareADate + " | " + this.MedicareBDate + " | " + this.MedicareCDate + " | " + this.MedicareDDate + " | " +
             this.MedicalPCPName + " | " + this.MedicalPCPID + " | " + this.DentalPCPName + " | " + this.DentalPCPID + " | " +
@@ -138,7 +142,7 @@ public class CensusRowClassMap : ClassMap<CensusRow> {
         this.Map(m => m.Relationship).Name("Relationship");
         this.Map(m => m.RelationshipCode).Name("Relationship Code");
         this.Map(m => m.SSN).Name("SSN");
-        this.Map(m => m.Gender).Name("Gender");
+        this.Map(m => m.Sex).Name("Sex");
         this.Map(m => m.BirthDate).Name("Birth Date");
         this.Map(m => m.Race).Name("Race");
         this.Map(m => m.Citizenship).Name("Citizenship");
@@ -170,61 +174,64 @@ public class CensusRowClassMap : ClassMap<CensusRow> {
         this.Map(m => m.SickHours).Name("Sick Hours");
         this.Map(m => m.PersonalHours).Name("Personal Hours");
         this.Map(m => m.W2Wages).Name("W2 Wages");
-        this.Map(m => m.Compensation).Name("Compensation");
-        this.Map(m => m.CompensationType).Name("Compensation Type");
+        this.Map(m => m.BenefitCompensationAmount).Name("Benefit Compensation Amount");
+        this.Map(m => m.BenefitCompensationType).Name("Benefit Compensation Type");
         this.Map(m => m.PayCycle).Name("Pay Cycle");
         this.Map(m => m.PayPeriods).Name("Pay Periods");
         this.Map(m => m.CostFactor).Name("Cost Factor");
         this.Map(m => m.TobaccoUser).Name("Tobacco User");
         this.Map(m => m.Disabled).Name("Disabled");
-        this.Map(m => m.MedicareADate).Name("Medicare A Date");
-        this.Map(m => m.MedicareBDate).Name("Medicare B Date");
-        this.Map(m => m.MedicareCDate).Name("Medicare C Date");
-        this.Map(m => m.MedicareDDate).Name("Medicare D Date");
-        this.Map(m => m.MedicalPCPName).Name("Medical PCP Name");
-        this.Map(m => m.MedicalPCPID).Name("Medical PCP ID");
-        this.Map(m => m.DentalPCPName).Name("Dental PCP Name");
-        this.Map(m => m.DentalPCPID).Name("Dental PCP ID");
-        this.Map(m => m.IPANumber).Name("IPA Number");
-        this.Map(m => m.OBGYN).Name("OBGYN");
-        this.Map(m => m.BenefitEligibleDate).Name("Benefit Eligible Date");
-        this.Map(m => m.UnlockEnrollmentDate).Name("Unlock Enrollment Date");
-        this.Map(m => m.OriginalEffectiveDateInfo).Name("Original Effective Date Info");
-        this.Map(m => m.SubscriberKey).Name("Subscriber Key");
-        this.Map(m => m.PlanType).Name("Plan Type");
+        //this.Map(m => m.MedicareADate).Name("Medicare A Date");
+        //this.Map(m => m.MedicareBDate).Name("Medicare B Date");
+        //this.Map(m => m.MedicareCDate).Name("Medicare C Date");
+        //this.Map(m => m.MedicareDDate).Name("Medicare D Date");
+        //this.Map(m => m.MedicalPCPName).Name("Medical PCP Name");
+        //this.Map(m => m.MedicalPCPID).Name("Medical PCP ID");
+        //this.Map(m => m.DentalPCPName).Name("Dental PCP Name");
+        //this.Map(m => m.DentalPCPID).Name("Dental PCP ID");
+        //this.Map(m => m.IPANumber).Name("IPA Number");
+        //this.Map(m => m.OBGYN).Name("OBGYN");
+        //this.Map(m => m.BenefitEligibleDate).Name("Benefit Eligible Date");
+        //this.Map(m => m.UnlockEnrollmentDate).Name("Unlock Enrollment Date");
+        //this.Map(m => m.OriginalEffectiveDateInfo).Name("Original Effective Date Info");
+        //this.Map(m => m.SubscriberKey).Name("Subscriber Key");
+        //this.Map(m => m.PlanType).Name("Plan Type");
         this.Map(m => m.PlanEffectiveStartDate).Name("Plan Effective Start Date");
         this.Map(m => m.PlanEffectiveEndDate).Name("Plan Effective End Date");
-        this.Map(m => m.PlanAdminName).Name("Plan Admin Name");
-        this.Map(m => m.PlanDisplayName).Name("Plan Display Name");
-        this.Map(m => m.PlanImportID).Name("Plan Import ID");
+        //this.Map(m => m.PlanAdminName).Name("Plan Admin Name");
+        //this.Map(m => m.PlanDisplayName).Name("Plan Display Name");
+        //this.Map(m => m.PlanImportID).Name("Plan Import ID");
         this.Map(m => m.EffectiveDate).Name("Effective Date");
-        this.Map(m => m.CoverageDetails).Name("Coverage Details");
-        this.Map(m => m.ElectionStatus).Name("Election Status");
-        this.Map(m => m.RiderCodes).Name("Rider Codes");
-        this.Map(m => m.Action).Name("Action");
-        this.Map(m => m.WaiveReason).Name("Waive Reason");
-        this.Map(m => m.PolicyNumber).Name("Policy Number");
-        this.Map(m => m.SubgroupNumber).Name("Subgroup Number");
-        this.Map(m => m.AgeDetermination).Name("Age Determination");
-        this.Map(m => m.Carrier).Name("Carrier");
-        this.Map(m => m.TotalRate).Name("Total Rate");
-        this.Map(m => m.EmployeeRate).Name("Employee Rate");
-        this.Map(m => m.SpouseRate).Name("Spouse Rate");
-        this.Map(m => m.ChildrenRate).Name("Children Rate");
-        this.Map(m => m.EmployeeContribution).Name("Employee Contribution");
-        this.Map(m => m.EmployeePre_TaxCost).Name("Employee Pre-Tax Cost");
-        this.Map(m => m.EmployeePost_TaxCost).Name("Employee Post-Tax Cost");
-        this.Map(m => m.EmployeeCostPerDeductionPeriod).Name("Employee Cost Per Deduction Period");
-        this.Map(m => m.PlanDeductionCycle).Name("Plan Deduction Cycle");
-        this.Map(m => m.LastModifiedDate).Name("Last Modified Date");
-        this.Map(m => m.LastModifiedBy).Name("Last Modified By");
-        this.Map(m => m.E_SignDate).Name("E-Sign Date");
-        this.Map(m => m.CalPERS_ID).Name("CalPERS ID");
-        this.Map(m => m.Add).Name("Add");
-        this.Map(m => m.Drop).Name("Drop");
-        this.Map(m => m.FamChange).Name("FamChange");
+        this.Map(m => m.ActivityDate).Name("Activity Date");
+        //this.Map(m => m.CoverageDetails).Name("Coverage Details");
+        //this.Map(m => m.ElectionStatus).Name("Election Status");
+        //this.Map(m => m.RiderCodes).Name("Rider Codes");
+        //this.Map(m => m.Action).Name("Action");
+        //this.Map(m => m.WaiveReason).Name("Waive Reason");
+        //this.Map(m => m.PolicyNumber).Name("Policy Number");
+        //this.Map(m => m.SubgroupNumber).Name("Subgroup Number");
+        //this.Map(m => m.AgeDetermination).Name("Age Determination");
+        //this.Map(m => m.Carrier).Name("Carrier");
+        //this.Map(m => m.TotalRate).Name("Total Rate");
+        //this.Map(m => m.EmployeeRate).Name("Employee Rate");
+        //this.Map(m => m.SpouseRate).Name("Spouse Rate");
+        //this.Map(m => m.ChildrenRate).Name("Children Rate");
+        //this.Map(m => m.EmployeeContribution).Name("Employee Contribution");
+        //this.Map(m => m.EmployeePre_TaxCost).Name("Employee Pre-Tax Cost");
+        //this.Map(m => m.EmployeePost_TaxCost).Name("Employee Post-Tax Cost");
+        //this.Map(m => m.EmployeeCostPerDeductionPeriod).Name("Employee Cost Per Deduction Period");
+        //this.Map(m => m.PlanDeductionCycle).Name("Plan Deduction Cycle");
+        //this.Map(m => m.LastModifiedDate).Name("Last Modified Date");
+        //this.Map(m => m.LastModifiedBy).Name("Last Modified By");
+        //this.Map(m => m.E_SignDate).Name("E-Sign Date");
+        //this.Map(m => m.CalPERS_ID).Name("CalPERS ID");
+        //this.Map(m => m.Add).Name("Add");
+        //this.Map(m => m.Drop).Name("Drop");
+        //this.Map(m => m.FamChange).Name("FamChange");
 
         // Map(m => m.EnrolledBy).Name("Enrolled By");
         // Map(m => m.NewBusiness).Name("New Business");
+        this.Map(m => m.Dental).Name("Dental");
+        this.Map(m => m.Vision).Name("Vision");
     }
 }

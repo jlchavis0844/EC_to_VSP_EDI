@@ -1,5 +1,5 @@
 ﻿
-namespace EC_to_VSP_EDI {
+namespace EC_to_Humana_EDI {
     public class Trailer {
         private const string SegmentID_SE = "SE";
         private string numberOfIncludedSegments_SE01;
@@ -15,7 +15,7 @@ namespace EC_to_VSP_EDI {
         public Trailer() {
             this.numberOfIncludedSegments_SE01 = Form1.Enrollments.Count.ToString();
             this.transactionSetControlNumber_SE02 = InterchangeTracker.GetInterchangeNumber().ToString();
-            this.groupControlNumber_GE02 = this.transactionSetControlNumber_SE02.PadLeft(4, '0');
+            this.groupControlNumber_GE02 = this.transactionSetControlNumber_SE02;
             this.interchangeControlNumber_IEA02 = this.transactionSetControlNumber_SE02;
         }
 

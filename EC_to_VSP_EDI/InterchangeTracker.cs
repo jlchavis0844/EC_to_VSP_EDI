@@ -1,6 +1,6 @@
 ﻿using System;
 using System.IO;
-using EC_to_VSP_EDI;
+using EC_to_Humana_EDI;
 
 public static class InterchangeTracker {
     public static string CWD = Directory.GetCurrentDirectory();

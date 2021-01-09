@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace EC_to_VSP_EDI.Properties {
+namespace EC_to_Humana_EDI.Properties {
 
 
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]

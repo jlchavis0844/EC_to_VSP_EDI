@@ -1,5 +1,5 @@
 ﻿
-namespace EC_to_VSP_EDI {
+namespace EC_to_Humana_EDI {
     public static class RelationshipCodes {
         public static string Spouse = "01";
         public static string Self = "18";
@@ -27,10 +27,10 @@ namespace EC_to_VSP_EDI {
         public static char SurvivingInsured = 'S';
     }
 
-    public static class GenderCodes {
-        public static char Male = 'M';
-        public static char Female = 'F';
-        public static char Unknown = 'U';
+    public static class SexCodes {
+        public static string Male = "M";
+        public static string Female = "F";
+        public static string Unknown = string.Empty;
     }
 
     public static class MaritalStatusCodes {
@@ -76,17 +76,19 @@ namespace EC_to_VSP_EDI {
     }
 
     public static class CoverageLevels {
-        public static string Individual = "IND";
+        public static string Individual = "EMP";
         public static string Family = "FAM";
-        public static string EmployeeSpouse = "ESP";
+        public static string EmployeeSpouse = "E1D";
         public static string EmployeePartner = "E1D";
-        public static string EmployeeCHD = "ECH";
+        public static string EmployeeChild = "E1D";
+        public static string EmployeeAnd1 = "E1D";
+
     }
 
     public static class TransactionSetPurposes {
         public static string Original = "00";
         public static string ReSubmission = "15";
         public static string InformationCopy = "22";
-        public static string Test = "22";
+        public static string Test = "00";
     }
 }
